@@ -234,3 +234,66 @@ msgstr "Dernier succès il y a @ago, @count requêtes"
 msgctxt "Smeetz"
 msgid "No successful sync for a day: sold-out badges are hidden until Smeetz answers again. See the log for errors."
 msgstr "Aucune synchronisation réussie depuis un jour : les mentions « complet » sont masquées jusqu’à ce que Smeetz réponde à nouveau. Voir le journal pour les erreurs."
+
+msgctxt "Smeetz"
+msgid "Consent"
+msgstr "Consentement"
+
+msgctxt "Smeetz"
+msgid "Ask before loading Smeetz"
+msgstr "Demander avant de charger Smeetz"
+
+msgctxt "Smeetz"
+msgid "The Smeetz widget sets tracking cookies as soon as it loads. When this is on, the first click on a booking button asks visitors whether to open the booking here (Smeetz loads on the page) or on smeetz.com in a new tab. The choice is remembered in the browser; place the \"Smeetz: booking choice\" block (in the footer, for example) to let visitors change it. Leave it off if a consent manager replaces Drupal.smeetzTicketing.consent."
+msgstr "Le widget Smeetz dépose des cookies de suivi dès qu’il se charge. Si cette option est active, le premier clic sur un bouton de réservation demande au visiteur s’il veut réserver ici (Smeetz se charge sur la page) ou sur smeetz.com dans un nouvel onglet. Le choix est retenu dans le navigateur ; placez le bloc « Smeetz : choix de réservation » (dans le pied de page, par exemple) pour que le visiteur puisse le changer. Laissez-la inactive si un gestionnaire de consentement remplace Drupal.smeetzTicketing.consent."
+
+msgctxt "Smeetz"
+msgid "Privacy policy link"
+msgstr "Lien vers la politique de confidentialité"
+
+msgctxt "Smeetz"
+msgid "Optional. A path on this site (/privacy) or a full address, linked from the question."
+msgstr "Facultatif. Un chemin de ce site (/confidentialite) ou une adresse complète, en lien dans la question."
+
+msgid "Enter a path starting with / or a full https:// address."
+msgstr "Saisissez un chemin commençant par / ou une adresse complète en https://."
+
+msgctxt "Smeetz"
+msgid "Smeetz: booking choice"
+msgstr "Smeetz : choix de réservation"
+
+msgctxt "Smeetz"
+msgid "Smeetz"
+msgstr "Smeetz"
+
+msgctxt "Smeetz"
+msgid "Change my choice for Smeetz bookings"
+msgstr "Modifier mon choix pour les réservations Smeetz"
+
+msgctxt "Smeetz"
+msgid "Privacy policy"
+msgstr "Politique de confidentialité"
+
+msgctxt "Smeetz"
+msgid "Book with Smeetz"
+msgstr "Réserver avec Smeetz"
+
+msgctxt "Smeetz"
+msgid "Tickets are sold by Smeetz. Booking on this page loads Smeetz here, and Smeetz sets cookies to measure its use. You can book on smeetz.com in a new tab instead."
+msgstr "La billetterie est assurée par Smeetz. Réserver sur cette page y charge Smeetz, qui dépose des cookies pour mesurer son utilisation. Vous pouvez aussi réserver sur smeetz.com, dans un nouvel onglet."
+
+msgctxt "Smeetz"
+msgid "Book on this page"
+msgstr "Réserver sur cette page"
+
+msgctxt "Smeetz"
+msgid "Open smeetz.com"
+msgstr "Ouvrir smeetz.com"
+
+msgctxt "Smeetz"
+msgid "Your choice is remembered in this browser."
+msgstr "Votre choix est retenu dans ce navigateur."
+
+msgctxt "Smeetz"
+msgid "Your choice is forgotten. The next booking will ask again."
+msgstr "Votre choix est oublié. La prochaine réservation vous le demandera à nouveau."

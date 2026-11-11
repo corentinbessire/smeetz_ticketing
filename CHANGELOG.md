@@ -2,6 +2,21 @@
 
 All notable changes to this module. Versions follow [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- **Ask before loading Smeetz** setting: the first booking click asks whether
+  to book on the page (Smeetz loads) or on smeetz.com, and the choice is
+  remembered in the browser. Optional privacy policy link in the question.
+- **Smeetz: booking choice** block: a button that forgets the choice and the
+  data Smeetz stored on the site.
+- `Drupal.smeetzTicketing.consent` may resolve NULL to cancel the click.
+
+### Upgrade
+
+- Run `drush updatedb`: it adds the two new settings, off.
+
 ## 0.1.0 - 2026-11-11
 
 ### Added

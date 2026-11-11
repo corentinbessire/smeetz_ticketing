@@ -104,11 +104,35 @@ environment, November 2026):
 
 It also sends analytics to Mixpanel. The widget itself loads Google reCAPTCHA
 and Klarna, and runs the organiser's Facebook Pixel and Google Tag Manager if
-they are set up in Smeetz. A site that must ask for consent first plugs a
-consent manager into the button:
+they are set up in Smeetz.
+
+### The built-in question
+
+Turn on **Ask before loading Smeetz** in the settings. The first click on a
+booking button then asks, in a dialog, whether to book on this page (Smeetz
+loads here) or on smeetz.com in a new tab. Escape closes it and nothing
+happens. The choice is kept in the browser's localStorage
+(`smeetzTicketing.consent`), so later clicks do not ask. Add an optional
+privacy policy link to the dialog with **Privacy policy link**.
+
+Place the **Smeetz: booking choice** block (in the footer, for example) so
+visitors can change their mind. Its button forgets the choice and removes
+what Smeetz stored on the site (`__smtz_uid`, `smtz-tid`, `smtz-tracker`).
+Smeetz's own cookies on smeetz.com can only be removed from smeetz.com. The
+block shows only while the question is on, and its button only once the
+script runs.
+
+The dialog has minimal styles; restyle it in the theme through
+`.smeetz-ticketing-consent`, `.smeetz-ticketing-consent__actions` and the
+buttons' `value` (`granted`, `declined`).
+
+### A consent manager instead
+
+Leave the question off and plug the consent manager into the button:
 
 ```js
-// Resolve TRUE to load Smeetz, FALSE to open the booking page instead.
+// Resolve TRUE to load Smeetz, FALSE to open the booking page instead,
+// NULL to do nothing.
 Drupal.smeetzTicketing.consent = (button) => myConsentManager.ask('smeetz');
 ```
 

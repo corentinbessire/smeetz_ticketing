@@ -1,0 +1,44 @@
+/**
+ * @file
+ * Minimal layout for the Smeetz consent question. Themes restyle it through
+ * .smeetz-ticketing-consent.
+ */
+.smeetz-ticketing-consent {
+  max-width: min(32rem, calc(100vw - 2rem));
+  margin: auto;
+  padding: 1.5rem;
+  border: 0;
+}
+.smeetz-ticketing-consent::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+.smeetz-ticketing-consent a {
+  color: inherit;
+  text-decoration: underline;
+}
+.smeetz-ticketing-consent h2 {
+  margin-top: 0;
+}
+.smeetz-ticketing-consent__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.smeetz-ticketing-consent__actions button {
+  padding: 0.625rem 1rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.smeetz-ticketing-consent__actions button[value="granted"] {
+  border-color: CanvasText;
+  background: CanvasText;
+  color: Canvas;
+}
+.smeetz-ticketing-consent__note {
+  margin-bottom: 0;
+  font-size: 0.875em;
+}

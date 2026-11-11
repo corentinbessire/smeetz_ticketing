@@ -92,6 +92,25 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
   }
 
   /**
+   * Tests that the consent question's settings reach the JavaScript.
+   */
+  public function testConsentSettings(): void {
+    $this->config('smeetz_ticketing.settings')
+      ->set('group_id', '16342')
+      ->set('consent', TRUE)
+      ->set('privacy_url', '/confidentialite')
+      ->save();
+    $entity = $this->createEntity(['field_ticket' => ['product_id' => '39161']]);
+    [$build] = $this->renderTicket($entity);
+    $settings = $build[0]['#attached']['drupalSettings']['smeetzTicketing'];
+    $this->assertSame(['privacyUrl' => base_path() . 'confidentialite'], $settings['consent']);
+
+    $this->config('smeetz_ticketing.settings')->set('privacy_url', 'https://example.com/privacy')->save();
+    [$build] = $this->renderTicket($entity);
+    $this->assertSame('https://example.com/privacy', $build[0]['#attached']['drupalSettings']['smeetzTicketing']['consent']['privacyUrl']);
+  }
+
+  /**
    * Tests the plain link while no group ID is set.
    */
   public function testPlainLinkWithoutGroup(): void {
