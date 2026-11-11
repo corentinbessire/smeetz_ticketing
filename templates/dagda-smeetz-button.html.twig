@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * The Smeetz booking button.
+ *
+ * A link to the Smeetz booking page. When "enhanced" is set (a group ID is
+ * configured), dagda-smeetz.js opens the Smeetz widget over the page instead.
+ * Override this template in a theme to change the markup; keep the
+ * data-smeetz-* attributes and the href.
+ *
+ * Available variables:
+ * - label: The button label.
+ * - attributes: HTML attributes, including href and data-smeetz-*.
+ * - enhanced: Whether the click opens the Smeetz widget.
+ * - product_id: The Smeetz product ID.
+ * - show_date: The day passed to Smeetz (YYYY-MM-DD), or NULL.
+ */
+#}
+<a{{ attributes }}>
+  {{- label -}}
+  {%- if not enhanced %}<span class="visually-hidden"> {{ '(opens Smeetz in a new tab)'|t({}, {'context': 'Smeetz'}) }}</span>{% endif -%}
+</a>

@@ -1,0 +1,61 @@
+dagda_smeetz.settings:
+  type: config_object
+  label: 'Smeetz settings'
+  mapping:
+    environment:
+      type: string
+      label: 'Environment'
+      constraints:
+        Choice:
+          - test
+          - live
+    group_id:
+      type: string
+      label: 'Group ID'
+      constraints:
+        Regex:
+          pattern: '/^[0-9]*$/'
+          message: 'The group ID is a number.'
+
+field.storage_settings.dagda_smeetz_ticket:
+  type: mapping
+  label: 'Smeetz ticket storage settings'
+
+field.field_settings.dagda_smeetz_ticket:
+  type: mapping
+  label: 'Smeetz ticket field settings'
+
+field.value.dagda_smeetz_ticket:
+  type: mapping
+  label: 'Default value'
+  mapping:
+    product_id:
+      type: string
+      label: 'Product ID'
+    option_uuid:
+      type: string
+      label: 'Option UUID'
+    availability:
+      type: string
+      label: 'Availability'
+    checked:
+      type: integer
+      label: 'Last check'
+
+field.widget.settings.dagda_smeetz_ticket:
+  type: mapping
+  label: 'Smeetz ticket widget settings'
+
+field.formatter.settings.dagda_smeetz_button:
+  type: mapping
+  label: 'Smeetz booking button settings'
+  mapping:
+    label:
+      type: label
+      label: 'Button label'
+    date_field:
+      type: string
+      label: 'Date field passed to Smeetz'
+    lightbox:
+      type: boolean
+      label: 'Open as an overlay'

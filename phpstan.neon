@@ -1,0 +1,8 @@
+# Run from the root of a Drupal site that has this module installed, so
+# phpstan-drupal finds Drupal: see tests/ci.sh.
+parameters:
+  level: 5
+  paths:
+    - .
+  excludePaths:
+    - vendor (?)

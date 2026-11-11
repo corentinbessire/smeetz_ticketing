@@ -1,0 +1,8 @@
+name: 'Dagda Smeetz'
+type: module
+description: 'Book Smeetz tickets from the site: a Smeetz ticket field and a button that opens the Smeetz booking widget.'
+package: Dagda
+core_version_requirement: ^11.3
+configure: dagda_smeetz.settings
+'interface translation project': dagda_smeetz
+'interface translation server pattern': modules/contrib/dagda_smeetz/translations/%language.po

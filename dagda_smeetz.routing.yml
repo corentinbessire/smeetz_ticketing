@@ -1,0 +1,7 @@
+dagda_smeetz.settings:
+  path: '/admin/config/services/smeetz'
+  defaults:
+    _form: '\Drupal\dagda_smeetz\Form\SmeetzSettingsForm'
+    _title: 'Smeetz'
+  requirements:
+    _permission: 'administer dagda_smeetz'

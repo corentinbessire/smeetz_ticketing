@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  dagda_smeetz.urls:
+    class: Drupal\dagda_smeetz\SmeetzUrls
+  Drupal\dagda_smeetz\SmeetzUrlsInterface: '@dagda_smeetz.urls'

@@ -1,0 +1,141 @@
+# French translation of Dagda Smeetz.
+msgid ""
+msgstr ""
+"Project-Id-Version: dagda_smeetz\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+msgid "Dagda Smeetz"
+msgstr "Dagda Smeetz"
+
+msgid "Book Smeetz tickets from the site: a Smeetz ticket field and a button that opens the Smeetz booking widget."
+msgstr "Réserver des billets Smeetz depuis le site : un champ billet Smeetz et un bouton qui ouvre le widget de réservation Smeetz."
+
+msgid "Smeetz"
+msgstr "Smeetz"
+
+msgid "Smeetz environment and group ID for the booking widget."
+msgstr "Environnement et ID de groupe Smeetz pour le widget de réservation."
+
+msgid "Administer Smeetz"
+msgstr "Administrer Smeetz"
+
+msgid "Set the Smeetz environment and group ID."
+msgstr "Définir l’environnement et l’ID de groupe Smeetz."
+
+msgid "The group ID is a number."
+msgstr "L’ID du groupe est un nombre."
+
+msgid "Book a ticket"
+msgstr "Réserver un billet"
+
+msgctxt "Smeetz"
+msgid "Smeetz ticket"
+msgstr "Billet Smeetz"
+
+msgctxt "Smeetz"
+msgid "The Smeetz product a visitor books, opened in the Smeetz booking widget."
+msgstr "Le produit Smeetz réservé par le visiteur, ouvert dans le widget de réservation Smeetz."
+
+msgctxt "Smeetz"
+msgid "Product ID"
+msgstr "ID du produit"
+
+msgctxt "Smeetz"
+msgid "Option UUID"
+msgstr "UUID de l’option"
+
+msgctxt "Smeetz"
+msgid "Availability"
+msgstr "Disponibilité"
+
+msgctxt "Smeetz"
+msgid "Last availability check"
+msgstr "Dernière vérification de la disponibilité"
+
+msgctxt "Smeetz"
+msgid "The Smeetz product ID is a number."
+msgstr "L’ID du produit Smeetz est un nombre."
+
+msgctxt "Smeetz"
+msgid "The Smeetz option UUID looks like 1b4e28ba-2fa1-11d2-883f-0016d3cca427."
+msgstr "L’UUID de l’option Smeetz a la forme 1b4e28ba-2fa1-11d2-883f-0016d3cca427."
+
+msgctxt "Smeetz"
+msgid "In the Smeetz back office, the number in the address of the product page. Content sold on the same ticket shares the same product ID."
+msgstr "Dans le back-office Smeetz, le nombre dans l’adresse de la page du produit. Les contenus vendus sur le même billet partagent le même ID de produit."
+
+msgctxt "Smeetz"
+msgid "Optional. Only needed to show \"sold out\" automatically: the ID of the ticket option, from the Smeetz back office."
+msgstr "Facultatif. Seulement pour afficher « complet » automatiquement : l’ID de l’option du billet, dans le back-office Smeetz."
+
+msgctxt "Smeetz"
+msgid "Smeetz booking button"
+msgstr "Bouton de réservation Smeetz"
+
+msgctxt "Smeetz"
+msgid "Button label"
+msgstr "Libellé du bouton"
+
+msgctxt "Smeetz"
+msgid "Date passed to Smeetz"
+msgstr "Date transmise à Smeetz"
+
+msgctxt "Smeetz"
+msgid "- None: Smeetz shows every date -"
+msgstr "- Aucune : Smeetz affiche toutes les dates -"
+
+msgctxt "Smeetz"
+msgid "Smeetz opens on the day of this field. It filters by day only: two sessions of the same product on the same day both appear."
+msgstr "Smeetz s’ouvre sur le jour de ce champ. Il filtre par jour seulement : deux séances du même produit le même jour apparaissent toutes les deux."
+
+msgctxt "Smeetz"
+msgid "Open the widget as an overlay"
+msgstr "Ouvrir le widget par-dessus la page"
+
+msgctxt "Smeetz"
+msgid "Label: @label"
+msgstr "Libellé : @label"
+
+msgctxt "Smeetz"
+msgid "Date: @field"
+msgstr "Date : @field"
+
+msgctxt "Smeetz"
+msgid "No date passed"
+msgstr "Aucune date transmise"
+
+msgctxt "Smeetz"
+msgid "Opens inline, not as an overlay"
+msgstr "S’ouvre dans la page, pas par-dessus"
+
+msgctxt "Smeetz"
+msgid "Environment"
+msgstr "Environnement"
+
+msgctxt "Smeetz"
+msgid "Test (test.tracker.smeetz.com)"
+msgstr "Test (test.tracker.smeetz.com)"
+
+msgctxt "Smeetz"
+msgid "Live (tracker.smeetz.com)"
+msgstr "Production (tracker.smeetz.com)"
+
+msgctxt "Smeetz"
+msgid "Use Test while the site is being built. Bookings made on Test are not real."
+msgstr "Utilisez Test pendant la construction du site. Les réservations faites sur Test ne sont pas réelles."
+
+msgctxt "Smeetz"
+msgid "Group ID"
+msgstr "ID du groupe"
+
+msgctxt "Smeetz"
+msgid "The organiser ID in Smeetz, a number. It appears in the embed code of any Smeetz widget (gId). While it is empty, the booking buttons link to the Smeetz booking page instead of opening the widget."
+msgstr "L’ID de l’organisateur dans Smeetz, un nombre. Il figure dans le code d’intégration de tout widget Smeetz (gId). Tant qu’il est vide, les boutons de réservation mènent à la page de réservation Smeetz au lieu d’ouvrir le widget."
+
+msgctxt "Smeetz"
+msgid "(opens Smeetz in a new tab)"
+msgstr "(ouvre Smeetz dans un nouvel onglet)"

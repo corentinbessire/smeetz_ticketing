@@ -1,0 +1,27 @@
+{
+    "name": "corentinbessire/dagda_smeetz",
+    "description": "Book Smeetz tickets from a Drupal site: a field for the Smeetz product and a button that opens the official Smeetz booking widget.",
+    "type": "drupal-module",
+    "keywords": [
+        "Drupal",
+        "Smeetz",
+        "ticketing",
+        "booking"
+    ],
+    "homepage": "https://github.com/corentinbessire/dagda-smeetz",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Corentin Bessire",
+            "homepage": "https://github.com/corentinbessire"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/corentinbessire/dagda-smeetz/issues",
+        "source": "https://github.com/corentinbessire/dagda-smeetz"
+    },
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3"
+    }
+}

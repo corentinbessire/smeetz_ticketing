@@ -1,0 +1,88 @@
+name: CI
+
+# Builds a plain Drupal 11 site, installs this branch into it as a Composer
+# package, then runs tests/ci.sh (PHPCS, PHPStan, unit and kernel tests).
+# A stock Drupal site keeps the module honest: it must not need anything a
+# Dagda Quickstart adds.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '**.md'
+      - LICENSE*
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  PHP_VERSION: '8.4'
+
+jobs:
+  ci:
+    name: Lint and tests
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mariadb:10.11
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal
+        ports:
+          - 3306:3306
+        options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      SIMPLETEST_DB: mysql://root:root@127.0.0.1:3306/drupal
+      SIMPLETEST_BASE_URL: http://localhost
+    steps:
+      - name: Checkout dagda-smeetz
+        uses: actions/checkout@v7
+        with:
+          path: package
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pdo, mysql, pdo_mysql, gd
+          coverage: none
+
+      - name: Cache Composer downloads
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/composer/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('package/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Build a Drupal 11 site
+        run: |
+          composer create-project drupal/recommended-project:^11 site \
+            --no-interaction --no-progress --no-install
+          cd site
+          composer config allow-plugins.phpstan/extension-installer true
+          composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --dev --no-progress --no-interaction \
+            drupal/core-dev:^11 \
+            mglaman/phpstan-drupal phpstan/extension-installer \
+            drupal/coder
+
+      - name: Require this branch
+        working-directory: site
+        run: |
+          composer config repositories.dagda-smeetz \
+            '{"type": "path", "url": "../package", "options": {"symlink": false, "versions": {"corentinbessire/dagda_smeetz": "dev-ci"}}}'
+          composer require corentinbessire/dagda_smeetz:dev-ci \
+            --no-progress --no-interaction
+          test -f web/modules/contrib/dagda_smeetz/dagda_smeetz.info.yml
+
+      - name: Lint
+        run: bash package/tests/ci.sh site lint
+
+      - name: Unit and kernel tests
+        if: ${{ !cancelled() }}
+        run: bash package/tests/ci.sh site test
