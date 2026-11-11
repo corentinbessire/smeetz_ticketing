@@ -81,11 +81,19 @@ final class SmeetzApiClientTest extends UnitTestCase {
    * Tests that a slot is read with its UTC start.
    */
   public function testSlot(): void {
-    $client = $this->client([new Response(200, [], json_encode(['data' => [[
-      'optionId' => 'AAAAAAAA-0000-4000-8000-000000000001',
-      'dateTimeStart' => '2027-03-12T19:00:00',
-      'available' => FALSE,
-    ], ['broken' => TRUE]], 'meta' => [], 'error' => NULL]))]);
+    $body = [
+      'data' => [
+        [
+          'optionId' => 'AAAAAAAA-0000-4000-8000-000000000001',
+          'dateTimeStart' => '2027-03-12T19:00:00',
+          'available' => FALSE,
+        ],
+        ['broken' => TRUE],
+      ],
+      'meta' => [],
+      'error' => NULL,
+    ];
+    $client = $this->client([new Response(200, [], json_encode($body))]);
     $slots = $client->availabilities(['aaaaaaaa-0000-4000-8000-000000000001'], 0, 1);
     $this->assertCount(1, $slots);
     $this->assertSame('aaaaaaaa-0000-4000-8000-000000000001', $slots[0]->optionId);
