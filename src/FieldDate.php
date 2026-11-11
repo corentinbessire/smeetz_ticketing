@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz;
+namespace Drupal\smeetz_ticketing;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 

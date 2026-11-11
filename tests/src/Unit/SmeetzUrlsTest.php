@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Unit;
+namespace Drupal\Tests\smeetz_ticketing\Unit;
 
-use Drupal\dagda_smeetz\Enum\SmeetzEnvironment;
-use Drupal\dagda_smeetz\SmeetzUrls;
+use Drupal\smeetz_ticketing\Enum\SmeetzEnvironment;
+use Drupal\smeetz_ticketing\SmeetzUrls;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,20 +15,20 @@ use PHPUnit\Framework\Attributes\Group;
  * Tests the Smeetz URLs built from the settings.
  */
 #[CoversClass(SmeetzUrls::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 final class SmeetzUrlsTest extends UnitTestCase {
 
   /**
    * Builds the service with the given settings.
    *
    * @param array<string, string> $settings
-   *   The dagda_smeetz.settings values.
+   *   The smeetz_ticketing.settings values.
    *
-   * @return \Drupal\dagda_smeetz\SmeetzUrls
+   * @return \Drupal\smeetz_ticketing\SmeetzUrls
    *   The service.
    */
   private function urls(array $settings): SmeetzUrls {
-    return new SmeetzUrls($this->getConfigFactoryStub(['dagda_smeetz.settings' => $settings]));
+    return new SmeetzUrls($this->getConfigFactoryStub(['smeetz_ticketing.settings' => $settings]));
   }
 
   /**
@@ -45,7 +45,7 @@ final class SmeetzUrlsTest extends UnitTestCase {
   /**
    * Provides environment settings and the URLs they give.
    *
-   * @return array<string, array{string, \Drupal\dagda_smeetz\Enum\SmeetzEnvironment, string, string}>
+   * @return array<string, array{string, \Drupal\smeetz_ticketing\Enum\SmeetzEnvironment, string, string}>
    *   Test cases.
    */
   public static function providerEnvironments(): array {

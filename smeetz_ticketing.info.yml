@@ -1,0 +1,8 @@
+name: 'Smeetz Ticketing'
+type: module
+description: 'Book Smeetz tickets from the site: a Smeetz ticket field and a button that opens the Smeetz booking widget.'
+package: Smeetz
+core_version_requirement: ^11.3
+configure: smeetz_ticketing.settings
+'interface translation project': smeetz_ticketing
+'interface translation server pattern': modules/contrib/smeetz_ticketing/translations/%language.po

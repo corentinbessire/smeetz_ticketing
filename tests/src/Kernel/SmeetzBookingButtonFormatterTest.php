@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Kernel;
+namespace Drupal\Tests\smeetz_ticketing\Kernel;
 
 use Drupal\Core\Render\RendererInterface;
-use Drupal\dagda_smeetz\Plugin\Field\FieldFormatter\SmeetzBookingButtonFormatter;
-use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
+use Drupal\smeetz_ticketing\Plugin\Field\FieldFormatter\SmeetzBookingButtonFormatter;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface;
 use Drupal\entity_test\Entity\EntityTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * Tests the Smeetz booking button formatter.
  */
 #[CoversClass(SmeetzBookingButtonFormatter::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 #[RunTestsInSeparateProcesses]
 final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
 
@@ -26,7 +26,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
    * @var array<string, mixed>
    */
   private array $display = [
-    'type' => 'dagda_smeetz_button',
+    'type' => 'smeetz_ticketing_button',
     'label' => 'hidden',
     'settings' => [
       'label' => 'Réserver ma place',
@@ -62,7 +62,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
    * Tests the enhanced button once a group ID is set.
    */
   public function testEnhancedButton(): void {
-    $this->config('dagda_smeetz.settings')->set('group_id', '16342')->save();
+    $this->config('smeetz_ticketing.settings')->set('group_id', '16342')->save();
     // 23:30 UTC on 11 March is already 12 March in Zurich.
     $entity = $this->createEntity([
       'field_ticket' => ['product_id' => '39161'],
@@ -71,7 +71,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     [$build, $html] = $this->renderTicket($entity);
 
     $this->setRawContent($html);
-    $link = $this->cssSelect('a.dagda-smeetz-button')[0] ?? NULL;
+    $link = $this->cssSelect('a.smeetz-ticketing-button')[0] ?? NULL;
     $this->assertNotNull($link, 'The button is rendered.');
     $this->assertSame('https://test-widget.smeetz.com/product/list/39161?productId=39161&orgid=16342', (string) $link['href']);
     $this->assertSame('39161', (string) $link['data-smeetz-product']);
@@ -83,12 +83,12 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     $this->assertStringContainsString('Réserver ma place', $html);
     $this->assertStringNotContainsString('new tab', $html);
 
-    $this->assertContains('dagda_smeetz/booking', $build[0]['#attached']['library']);
+    $this->assertContains('smeetz_ticketing/booking', $build[0]['#attached']['library']);
     $this->assertSame([
       'groupId' => '16342',
       'loaderUrl' => 'https://test.tracker.smeetz.com/smeetz-main-widget.js',
-    ], $build[0]['#attached']['drupalSettings']['dagdaSmeetz']);
-    $this->assertContains('config:dagda_smeetz.settings', $build['#cache']['tags']);
+    ], $build[0]['#attached']['drupalSettings']['smeetzTicketing']);
+    $this->assertContains('config:smeetz_ticketing.settings', $build['#cache']['tags']);
   }
 
   /**
@@ -99,20 +99,20 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     [$build, $html] = $this->renderTicket($entity);
 
     $this->setRawContent($html);
-    $link = $this->cssSelect('a.dagda-smeetz-button')[0] ?? NULL;
+    $link = $this->cssSelect('a.smeetz-ticketing-button')[0] ?? NULL;
     $this->assertNotNull($link);
     $this->assertSame('https://test-widget.smeetz.com/product/list/39161?productId=39161', (string) $link['href']);
     $this->assertEmpty((string) $link['data-smeetz-product']);
     $this->assertStringContainsString('opens Smeetz in a new tab', $html);
     $this->assertArrayNotHasKey('#attached', $build[0]);
-    $this->assertContains('config:dagda_smeetz.settings', $build['#cache']['tags']);
+    $this->assertContains('config:smeetz_ticketing.settings', $build['#cache']['tags']);
   }
 
   /**
    * Tests the live environment, a date-only value and no date at all.
    */
   public function testLiveAndDates(): void {
-    $this->config('dagda_smeetz.settings')
+    $this->config('smeetz_ticketing.settings')
       ->set('environment', 'live')
       ->set('group_id', '16342')
       ->save();
@@ -120,17 +120,17 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     $entity = $this->createEntity(['field_ticket' => ['product_id' => '39161']]);
     [$build, $html] = $this->renderTicket($entity);
     $this->setRawContent($html);
-    $link = $this->cssSelect('a.dagda-smeetz-button')[0];
+    $link = $this->cssSelect('a.smeetz-ticketing-button')[0];
     $this->assertEmpty((string) $link['data-smeetz-date'], 'No date when the date field is empty.');
     $this->assertStringStartsWith('https://widget.smeetz.com/', (string) $link['href']);
-    $this->assertSame('https://tracker.smeetz.com/smeetz-main-widget.js', $build[0]['#attached']['drupalSettings']['dagdaSmeetz']['loaderUrl']);
+    $this->assertSame('https://tracker.smeetz.com/smeetz-main-widget.js', $build[0]['#attached']['drupalSettings']['smeetzTicketing']['loaderUrl']);
 
     $this->display['settings']['lightbox'] = FALSE;
     $this->display['settings']['date_field'] = '';
     $entity->set('field_when', '2027-03-11T10:00:00')->save();
     [, $html] = $this->renderTicket($entity);
     $this->setRawContent($html);
-    $link = $this->cssSelect('a.dagda-smeetz-button')[0];
+    $link = $this->cssSelect('a.smeetz-ticketing-button')[0];
     $this->assertEmpty((string) $link['data-smeetz-date'], 'No date when no date field is set.');
     $this->assertSame('false', (string) $link['data-smeetz-lightbox']);
   }
@@ -139,7 +139,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
    * Tests the sold-out label, and that a stale status is ignored.
    */
   public function testSoldOut(): void {
-    $this->config('dagda_smeetz.settings')->set('group_id', '16342')->save();
+    $this->config('smeetz_ticketing.settings')->set('group_id', '16342')->save();
     $this->display['settings']['sold_out_label'] = 'Complet';
     $now = $this->container->get('datetime.time')->getRequestTime();
     $state = $this->container->get('state');
@@ -151,7 +151,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     [$build, $html] = $this->renderTicket($entity);
     $this->setRawContent($html);
     $this->assertCount(0, $this->cssSelect('a'), 'No link when sold out.');
-    $badge = $this->cssSelect('span.dagda-smeetz-button.is-sold-out')[0] ?? NULL;
+    $badge = $this->cssSelect('span.smeetz-ticketing-button.is-sold-out')[0] ?? NULL;
     $this->assertNotNull($badge);
     $this->assertSame('Complet', trim((string) $badge));
     $this->assertSame('true', (string) $badge['aria-disabled']);
@@ -161,7 +161,7 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     $state->set(AvailabilitySyncInterface::STATE_LAST_SUCCESS, $now - 2 * 86400);
     [, $html] = $this->renderTicket($entity);
     $this->setRawContent($html);
-    $this->assertCount(1, $this->cssSelect('a.dagda-smeetz-button'));
+    $this->assertCount(1, $this->cssSelect('a.smeetz-ticketing-button'));
   }
 
   /**

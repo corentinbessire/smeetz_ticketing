@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Sync;
+namespace Drupal\smeetz_ticketing\Sync;
 
 /**
  * Reads ticket availability from Smeetz and writes it to the ticket fields.
@@ -12,17 +12,17 @@ interface AvailabilitySyncInterface {
   /**
    * State key: Unix time of the last successful sync.
    */
-  public const STATE_LAST_SUCCESS = 'dagda_smeetz.sync.last_success';
+  public const STATE_LAST_SUCCESS = 'smeetz_ticketing.sync.last_success';
 
   /**
    * State key: Unix time of the last attempt, successful or not.
    */
-  public const STATE_LAST_ATTEMPT = 'dagda_smeetz.sync.last_attempt';
+  public const STATE_LAST_ATTEMPT = 'smeetz_ticketing.sync.last_attempt';
 
   /**
    * State key: requests made by the last successful sync.
    */
-  public const STATE_LAST_REQUESTS = 'dagda_smeetz.sync.last_requests';
+  public const STATE_LAST_REQUESTS = 'smeetz_ticketing.sync.last_requests';
 
   /**
    * Seconds after which a status no longer counts if no sync succeeded.
@@ -34,7 +34,7 @@ interface AvailabilitySyncInterface {
    *
    * Never throws: errors are logged, the last known statuses stay.
    *
-   * @return \Drupal\dagda_smeetz\Sync\SyncResult
+   * @return \Drupal\smeetz_ticketing\Sync\SyncResult
    *   What the run did.
    */
   public function run(): SyncResult;

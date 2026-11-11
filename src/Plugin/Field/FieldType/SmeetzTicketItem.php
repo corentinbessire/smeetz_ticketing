@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Plugin\Field\FieldType;
+namespace Drupal\smeetz_ticketing\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\Attribute\FieldType;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\dagda_smeetz\FieldDate;
+use Drupal\smeetz_ticketing\FieldDate;
 
 /**
  * A Smeetz ticket: the product sold, and its last known availability.
@@ -26,12 +26,12 @@ use Drupal\dagda_smeetz\FieldDate;
  * @property int|null $checked
  */
 #[FieldType(
-  id: 'dagda_smeetz_ticket',
+  id: 'smeetz_ticketing_ticket',
   label: new TranslatableMarkup('Smeetz ticket', [], ['context' => 'Smeetz']),
   description: new TranslatableMarkup('The Smeetz product a visitor books, opened in the Smeetz booking widget.', [], ['context' => 'Smeetz']),
   category: 'general',
-  default_widget: 'dagda_smeetz_ticket',
-  default_formatter: 'dagda_smeetz_button',
+  default_widget: 'smeetz_ticketing_ticket',
+  default_formatter: 'smeetz_ticketing_button',
 )]
 final class SmeetzTicketItem extends FieldItemBase {
 

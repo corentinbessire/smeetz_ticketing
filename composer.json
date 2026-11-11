@@ -1,5 +1,5 @@
 {
-    "name": "corentinbessire/dagda_smeetz",
+    "name": "corentinbessire/smeetz_ticketing",
     "description": "Book Smeetz tickets from a Drupal site: a field for the Smeetz product and a button that opens the official Smeetz booking widget.",
     "type": "drupal-module",
     "keywords": [
@@ -8,7 +8,7 @@
         "ticketing",
         "booking"
     ],
-    "homepage": "https://github.com/corentinbessire/dagda-smeetz",
+    "homepage": "https://github.com/corentinbessire/smeetz_ticketing",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -17,8 +17,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/corentinbessire/dagda-smeetz/issues",
-        "source": "https://github.com/corentinbessire/dagda-smeetz"
+        "issues": "https://github.com/corentinbessire/smeetz_ticketing/issues",
+        "source": "https://github.com/corentinbessire/smeetz_ticketing"
     },
     "require": {
         "php": ">=8.3",

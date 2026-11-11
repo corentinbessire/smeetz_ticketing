@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Kernel;
+namespace Drupal\Tests\smeetz_ticketing\Kernel;
 
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\dagda_smeetz\Form\SmeetzSettingsForm;
+use Drupal\smeetz_ticketing\Form\SmeetzSettingsForm;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,21 +16,21 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * Tests the Smeetz settings form.
  */
 #[CoversClass(SmeetzSettingsForm::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 #[RunTestsInSeparateProcesses]
 final class SmeetzSettingsFormTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['dagda_smeetz', 'system', 'user'];
+  protected static $modules = ['smeetz_ticketing', 'system', 'user'];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig(['dagda_smeetz']);
+    $this->installConfig(['smeetz_ticketing']);
   }
 
   /**
@@ -52,11 +52,11 @@ final class SmeetzSettingsFormTest extends KernelTestBase {
    * Tests that valid values are saved.
    */
   public function testSave(): void {
-    $this->assertSame('test', $this->config('dagda_smeetz.settings')->get('environment'));
+    $this->assertSame('test', $this->config('smeetz_ticketing.settings')->get('environment'));
 
     $form_state = $this->submit(['environment' => 'live', 'group_id' => '16342']);
     $this->assertSame([], $form_state->getErrors());
-    $config = $this->config('dagda_smeetz.settings');
+    $config = $this->config('smeetz_ticketing.settings');
     $this->assertSame('live', $config->get('environment'));
     $this->assertSame('16342', $config->get('group_id'));
   }
@@ -67,7 +67,7 @@ final class SmeetzSettingsFormTest extends KernelTestBase {
   public function testInvalidGroupId(): void {
     $form_state = $this->submit(['environment' => 'test', 'group_id' => 'abc']);
     $this->assertArrayHasKey('group_id', $form_state->getErrors());
-    $saved = $this->container->get('config.storage')->read('dagda_smeetz.settings');
+    $saved = $this->container->get('config.storage')->read('smeetz_ticketing.settings');
     $this->assertSame('', $saved['group_id']);
   }
 
@@ -75,8 +75,8 @@ final class SmeetzSettingsFormTest extends KernelTestBase {
    * Tests that the route requires the module's permission.
    */
   public function testRouteAccess(): void {
-    $route = $this->container->get('router.route_provider')->getRouteByName('dagda_smeetz.settings');
-    $this->assertSame('administer dagda_smeetz', $route->getRequirement('_permission'));
+    $route = $this->container->get('router.route_provider')->getRouteByName('smeetz_ticketing.settings');
+    $this->assertSame('administer smeetz_ticketing', $route->getRequirement('_permission'));
     $this->assertSame('/admin/config/services/smeetz', $route->getPath());
   }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Api;
+namespace Drupal\smeetz_ticketing\Api;
 
 /**
  * One availability slot of a Smeetz product option.

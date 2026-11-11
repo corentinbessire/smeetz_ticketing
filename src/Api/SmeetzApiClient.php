@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Api;
+namespace Drupal\smeetz_ticketing\Api;
 
 use Drupal\Core\Site\Settings;
-use Drupal\dagda_smeetz\Exception\SmeetzApiException;
-use Drupal\dagda_smeetz\Exception\SmeetzRateLimitException;
-use Drupal\dagda_smeetz\SmeetzUrlsInterface;
+use Drupal\smeetz_ticketing\Exception\SmeetzApiException;
+use Drupal\smeetz_ticketing\Exception\SmeetzRateLimitException;
+use Drupal\smeetz_ticketing\SmeetzUrlsInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -51,7 +51,7 @@ final class SmeetzApiClient implements SmeetzApiClientInterface {
    */
   public function availabilities(array $option_ids, int $from, int $to): array {
     if (!$this->hasApiKey()) {
-      throw new SmeetzApiException('No Smeetz API key in $settings[\'dagda_smeetz\'][\'api_key\'].');
+      throw new SmeetzApiException('No Smeetz API key in $settings[\'smeetz_ticketing\'][\'api_key\'].');
     }
     $option_ids = array_values(array_unique(array_filter($option_ids)));
     $slots = [];
@@ -143,7 +143,7 @@ final class SmeetzApiClient implements SmeetzApiClientInterface {
    * @param mixed $row
    *   One "data" row.
    *
-   * @return \Drupal\dagda_smeetz\Api\AvailabilitySlot|null
+   * @return \Drupal\smeetz_ticketing\Api\AvailabilitySlot|null
    *   The slot, or NULL when the row lacks what the sync needs.
    */
   private function slot(mixed $row): ?AvailabilitySlot {
@@ -167,7 +167,7 @@ final class SmeetzApiClient implements SmeetzApiClientInterface {
    *   The key, or an empty string.
    */
   private function apiKey(): string {
-    $settings = $this->settings->get('dagda_smeetz', []);
+    $settings = $this->settings->get('smeetz_ticketing', []);
     return is_array($settings) ? trim((string) ($settings['api_key'] ?? '')) : '';
   }
 

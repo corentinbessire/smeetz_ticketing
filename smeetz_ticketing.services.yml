@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+
+  logger.channel.smeetz_ticketing:
+    parent: logger.channel_base
+    arguments: ['smeetz_ticketing']
+
+  smeetz_ticketing.urls:
+    class: Drupal\smeetz_ticketing\SmeetzUrls
+  Drupal\smeetz_ticketing\SmeetzUrlsInterface: '@smeetz_ticketing.urls'
+
+  smeetz_ticketing.api_client:
+    class: Drupal\smeetz_ticketing\Api\SmeetzApiClient
+  Drupal\smeetz_ticketing\Api\SmeetzApiClientInterface: '@smeetz_ticketing.api_client'
+
+  smeetz_ticketing.availability_sync:
+    class: Drupal\smeetz_ticketing\Sync\AvailabilitySync
+  Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface: '@smeetz_ticketing.availability_sync'

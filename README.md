@@ -1,4 +1,4 @@
-# Dagda Smeetz
+# Smeetz Ticketing
 
 Book [Smeetz](https://www.smeetz.com/) tickets from a Drupal 11 site. The
 module adds a **Smeetz ticket** field and a **Smeetz booking button** that
@@ -26,13 +26,13 @@ Nothing in it is specific to one site: add the field to any content type.
 The module is not on drupal.org. Add its repository, then require it:
 
 ```bash
-composer config repositories.dagda-smeetz \
-  '{"type": "vcs", "url": "git@github.com:corentinbessire/dagda-smeetz.git", "no-api": true}'
-composer require corentinbessire/dagda_smeetz
-drush en dagda_smeetz
+composer config repositories.smeetz-ticketing \
+  '{"type": "vcs", "url": "git@github.com:corentinbessire/smeetz_ticketing.git", "no-api": true}'
+composer require corentinbessire/smeetz_ticketing
+drush en smeetz_ticketing
 ```
 
-It installs to `web/modules/contrib/dagda_smeetz`.
+It installs to `web/modules/contrib/smeetz_ticketing`.
 
 ## Set up
 
@@ -62,7 +62,7 @@ set in the formatter) instead of the button.
 
 1. Put the key in `settings.local.php`, never in configuration:
    ```php
-   $settings['dagda_smeetz']['api_key'] = '…';
+   $settings['smeetz_ticketing']['api_key'] = '…';
    ```
    It is in the Smeetz back office → apps menu → Integrations.
 2. On each item, fill the **Option UUID**.
@@ -109,15 +109,15 @@ consent manager into the button:
 
 ```js
 // Resolve TRUE to load Smeetz, FALSE to open the booking page instead.
-Drupal.dagdaSmeetz.consent = (button) => myConsentManager.ask('smeetz');
+Drupal.smeetzTicketing.consent = (button) => myConsentManager.ask('smeetz');
 ```
 
-Set it in a library that loads before `dagda_smeetz/booking`. It is called
+Set it in a library that loads before `smeetz_ticketing/booking`. It is called
 before Smeetz loads, never after.
 
 ## Theming
 
-Override `dagda-smeetz-button.html.twig` in the theme. Keep the `href` and the
+Override `smeetz-ticketing-button.html.twig` in the theme. Keep the `href` and the
 `data-smeetz-*` attributes: the script reads them.
 
 ## Known limits
@@ -135,5 +135,6 @@ tests/local.sh          # PHPCS, PHPStan, unit and kernel tests in a throwaway D
 tests/local.sh lint     # or one step: lint, test
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same `tests/ci.sh` on pull requests,
-against a plain Drupal 11 site.
+`tests/local.sh` clones the Dagda Quickstart, which is private. Without access
+to it, open a pull request: CI (`.github/workflows/ci.yml`) runs the same
+`tests/ci.sh` against a plain Drupal 11 site.

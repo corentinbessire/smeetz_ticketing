@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Drush\Commands;
+namespace Drupal\smeetz_ticketing\Drush\Commands;
 
-use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 
 /**
- * Drush commands for Dagda Smeetz.
+ * Drush commands for Smeetz Ticketing.
  */
 final class SmeetzCommands extends DrushCommands {
 

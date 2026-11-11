@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Sync;
+namespace Drupal\smeetz_ticketing\Sync;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -12,11 +12,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\dagda_smeetz\Api\AvailabilitySlot;
-use Drupal\dagda_smeetz\Api\SmeetzApiClientInterface;
-use Drupal\dagda_smeetz\Exception\SmeetzApiException;
-use Drupal\dagda_smeetz\FieldDate;
-use Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem;
+use Drupal\smeetz_ticketing\Api\AvailabilitySlot;
+use Drupal\smeetz_ticketing\Api\SmeetzApiClientInterface;
+use Drupal\smeetz_ticketing\Exception\SmeetzApiException;
+use Drupal\smeetz_ticketing\FieldDate;
+use Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -48,7 +48,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
     #[Autowire(service: 'lock')]
     private readonly LockBackendInterface $lock,
     private readonly ConfigFactoryInterface $configFactory,
-    #[Autowire(service: 'logger.channel.dagda_smeetz')]
+    #[Autowire(service: 'logger.channel.smeetz_ticketing')]
     private readonly LoggerInterface $logger,
   ) {}
 
@@ -59,7 +59,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
     if (!$this->client->hasApiKey()) {
       return new SyncResult(FALSE, message: 'No Smeetz API key in settings.php.');
     }
-    if (!$this->lock->acquire('dagda_smeetz_sync', 120)) {
+    if (!$this->lock->acquire('smeetz_ticketing_sync', 120)) {
       return new SyncResult(FALSE, message: 'Another sync is running.');
     }
     $now = $this->time->getRequestTime();
@@ -69,7 +69,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
     try {
       $targets = $this->targets($now);
       if ($targets === []) {
-        // Outside the festival period: no call at all.
+        // Outside the sales period: no call at all.
         $this->state->set(self::STATE_LAST_SUCCESS, $now);
         $this->state->set(self::STATE_LAST_REQUESTS, 0);
         return new SyncResult(TRUE, message: 'No upcoming item to check.');
@@ -99,7 +99,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
       return new SyncResult(FALSE, requests: $this->client->requestCount() - $requests_before, message: $e->getMessage());
     }
     finally {
-      $this->lock->release('dagda_smeetz_sync');
+      $this->lock->release('smeetz_ticketing_sync');
     }
   }
 
@@ -130,7 +130,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
   private function targets(int $now): array {
     $timezone = (string) ($this->configFactory->get('system.date')->get('timezone.default') ?: 'UTC');
     $targets = [];
-    $map = $this->entityFieldManager->getFieldMapByFieldType('dagda_smeetz_ticket');
+    $map = $this->entityFieldManager->getFieldMapByFieldType('smeetz_ticketing_ticket');
     foreach ($map as $entity_type_id => $fields) {
       $storage = $this->entityTypeManager->getStorage($entity_type_id);
       foreach ($fields as $field_name => $info) {
@@ -185,10 +185,10 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
   /**
    * Groups slots by option UUID.
    *
-   * @param \Drupal\dagda_smeetz\Api\AvailabilitySlot[] $slots
+   * @param \Drupal\smeetz_ticketing\Api\AvailabilitySlot[] $slots
    *   The slots.
    *
-   * @return array<string, \Drupal\dagda_smeetz\Api\AvailabilitySlot[]>
+   * @return array<string, \Drupal\smeetz_ticketing\Api\AvailabilitySlot[]>
    *   Slots keyed by option UUID.
    */
   private function index(array $slots): array {
@@ -204,7 +204,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
    *
    * @param array<int, array{entity_type: string, id: int|string, field: string, delta: int, option: string, start: int|null}> $targets
    *   The items checked.
-   * @param array<string, \Drupal\dagda_smeetz\Api\AvailabilitySlot[]> $slots
+   * @param array<string, \Drupal\smeetz_ticketing\Api\AvailabilitySlot[]> $slots
    *   Slots keyed by option UUID.
    * @param int $now
    *   The current time.
@@ -253,7 +253,7 @@ final class AvailabilitySync implements AvailabilitySyncInterface {
   /**
    * Works out an item's availability from its option's slots.
    *
-   * @param \Drupal\dagda_smeetz\Api\AvailabilitySlot[] $slots
+   * @param \Drupal\smeetz_ticketing\Api\AvailabilitySlot[] $slots
    *   The slots of the item's option.
    * @param int|null $start
    *   The item's start, or NULL when it has no date.

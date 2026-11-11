@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Form;
+namespace Drupal\smeetz_ticketing\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -12,7 +12,7 @@ use Drupal\Core\Site\Settings;
  * Settings for the Smeetz booking widget.
  *
  * The API key used by the availability sync is not set here: it is a secret,
- * read from $settings['dagda_smeetz']['api_key'] in settings.local.php.
+ * read from $settings['smeetz_ticketing']['api_key'] in settings.local.php.
  */
 final class SmeetzSettingsForm extends ConfigFormBase {
 
@@ -20,10 +20,10 @@ final class SmeetzSettingsForm extends ConfigFormBase {
    * Whether an API key is set in settings.php.
    *
    * @return bool
-   *   TRUE when $settings['dagda_smeetz']['api_key'] is not empty.
+   *   TRUE when $settings['smeetz_ticketing']['api_key'] is not empty.
    */
   private function apiKeySet(): bool {
-    $settings = Settings::get('dagda_smeetz', []);
+    $settings = Settings::get('smeetz_ticketing', []);
     return is_array($settings) && trim((string) ($settings['api_key'] ?? '')) !== '';
   }
 
@@ -31,14 +31,14 @@ final class SmeetzSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return 'dagda_smeetz_settings';
+    return 'smeetz_ticketing_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames(): array {
-    return ['dagda_smeetz.settings'];
+    return ['smeetz_ticketing.settings'];
   }
 
   /**
@@ -53,7 +53,7 @@ final class SmeetzSettingsForm extends ConfigFormBase {
         'live' => $this->t('Live (tracker.smeetz.com)', [], ['context' => 'Smeetz']),
       ],
       '#description' => $this->t('Use Test while the site is being built. Bookings made on Test are not real.', [], ['context' => 'Smeetz']),
-      '#config_target' => 'dagda_smeetz.settings:environment',
+      '#config_target' => 'smeetz_ticketing.settings:environment',
     ];
     $form['group_id'] = [
       '#type' => 'textfield',
@@ -61,7 +61,7 @@ final class SmeetzSettingsForm extends ConfigFormBase {
       '#description' => $this->t('The organiser ID in Smeetz, a number. It appears in the embed code of any Smeetz widget (gId). While it is empty, the booking buttons link to the Smeetz booking page instead of opening the widget.', [], ['context' => 'Smeetz']),
       '#size' => 12,
       '#maxlength' => 20,
-      '#config_target' => 'dagda_smeetz.settings:group_id',
+      '#config_target' => 'smeetz_ticketing.settings:group_id',
     ];
     $form['sync'] = [
       '#type' => 'details',
@@ -75,14 +75,14 @@ final class SmeetzSettingsForm extends ConfigFormBase {
       '#step' => 1,
       '#field_suffix' => $this->t('minutes', [], ['context' => 'Smeetz']),
       '#description' => $this->t('How often cron asks Smeetz which sessions are sold out. 0 turns the sync off. One check covers every upcoming session in a few requests.', [], ['context' => 'Smeetz']),
-      '#config_target' => 'dagda_smeetz.settings:sync_interval',
+      '#config_target' => 'smeetz_ticketing.settings:sync_interval',
     ];
     $form['sync']['api_key'] = [
       '#type' => 'item',
       '#title' => $this->t('API key', [], ['context' => 'Smeetz']),
       '#markup' => $this->apiKeySet()
         ? $this->t('Set in settings.php.', [], ['context' => 'Smeetz'])
-        : $this->t("Not set. Add \$settings['dagda_smeetz']['api_key'] to settings.local.php: it is a secret and never goes in configuration.", [], ['context' => 'Smeetz']),
+        : $this->t("Not set. Add \$settings['smeetz_ticketing']['api_key'] to settings.local.php: it is a secret and never goes in configuration.", [], ['context' => 'Smeetz']),
     ];
     return parent::buildForm($form, $form_state);
   }

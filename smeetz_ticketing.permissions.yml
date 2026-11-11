@@ -1,4 +1,4 @@
-administer dagda_smeetz:
+administer smeetz_ticketing:
   title: 'Administer Smeetz'
   description: 'Set the Smeetz environment and group ID.'
   restrict access: true

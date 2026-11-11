@@ -9,18 +9,18 @@
 #   step       lint, test or all (default: all). See tests/ci.sh.
 #   --refresh  Pull the Quickstart's latest main and reinstall its packages.
 #
-# The site lives in $DAGDA_CI_SITE (default ~/.cache/dagda-smeetz-ci) as the
-# DDEV project "dagda-smeetz-ci". The first run clones the Quickstart and
+# The site lives in $SMEETZ_CI_SITE (default ~/.cache/smeetz-ticketing-ci) as the
+# DDEV project "smeetz-ticketing-ci". The first run clones the Quickstart and
 # builds it (a few minutes); later runs reuse it and only copy this tree in.
-# `ddev delete -Oy dagda-smeetz-ci` and removing the directory clean it up.
+# `ddev delete -Oy smeetz-ticketing-ci` and removing the directory clean it up.
 
 set -euo pipefail
 
 package_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-site="${DAGDA_CI_SITE:-$HOME/.cache/dagda-smeetz-ci}"
+site="${SMEETZ_CI_SITE:-$HOME/.cache/smeetz-ticketing-ci}"
 quickstart_repo="${QUICKSTART_REPO:-git@github.com:corentinbessire/quickstart.git}"
-project=dagda-smeetz-ci
-module_path=web/modules/contrib/dagda_smeetz
+project=smeetz-ticketing-ci
+module_path=web/modules/contrib/smeetz_ticketing
 
 refresh=0
 if [ "${1:-}" = "--refresh" ]; then
@@ -55,10 +55,10 @@ if [ $refresh -eq 1 ]; then
   ddev config --project-name="$project" --webimage-extra-packages="" >/dev/null
   ddev start -y
   ddev composer install --prefer-dist --no-progress --no-interaction
-  copy_package .dagda_smeetz
-  ddev composer config repositories.dagda-smeetz \
-    '{"type": "path", "url": ".dagda_smeetz", "options": {"symlink": false, "versions": {"corentinbessire/dagda_smeetz": "dev-local"}}}'
-  ddev composer require corentinbessire/dagda_smeetz:dev-local \
+  copy_package .smeetz_ticketing
+  ddev composer config repositories.smeetz-ticketing \
+    '{"type": "path", "url": ".smeetz_ticketing", "options": {"symlink": false, "versions": {"corentinbessire/smeetz_ticketing": "dev-local"}}}'
+  ddev composer require corentinbessire/smeetz_ticketing:dev-local \
     --with-all-dependencies --no-progress --no-interaction
 else
   ddev start -y >/dev/null

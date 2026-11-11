@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Hook;
+namespace Drupal\smeetz_ticketing\Hook;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -11,11 +11,11 @@ use Drupal\Core\Extension\Requirement\RequirementSeverity;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\dagda_smeetz\Api\SmeetzApiClientInterface;
-use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
+use Drupal\smeetz_ticketing\Api\SmeetzApiClientInterface;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface;
 
 /**
- * Hook implementations for Dagda Smeetz.
+ * Hook implementations for Smeetz Ticketing.
  */
 final class SmeetzHooks {
 
@@ -36,7 +36,7 @@ final class SmeetzHooks {
   #[Hook('theme')]
   public function theme(): array {
     return [
-      'dagda_smeetz_button' => [
+      'smeetz_ticketing_button' => [
         'variables' => [
           'label' => '',
           'attributes' => [],
@@ -57,7 +57,7 @@ final class SmeetzHooks {
    */
   #[Hook('cron')]
   public function cron(): void {
-    $interval = (int) $this->configFactory->get('dagda_smeetz.settings')->get('sync_interval');
+    $interval = (int) $this->configFactory->get('smeetz_ticketing.settings')->get('sync_interval');
     if ($interval <= 0 || !$this->client->hasApiKey()) {
       return;
     }
@@ -73,16 +73,16 @@ final class SmeetzHooks {
    */
   #[Hook('runtime_requirements')]
   public function runtimeRequirements(): array {
-    $interval = (int) $this->configFactory->get('dagda_smeetz.settings')->get('sync_interval');
+    $interval = (int) $this->configFactory->get('smeetz_ticketing.settings')->get('sync_interval');
     if ($interval <= 0) {
       return [];
     }
     $requirement = ['title' => $this->t('Smeetz availability sync', [], ['context' => 'Smeetz'])];
     if (!$this->client->hasApiKey()) {
       $requirement['value'] = $this->t('No API key', [], ['context' => 'Smeetz']);
-      $requirement['description'] = $this->t("Set \$settings['dagda_smeetz']['api_key'] in settings.local.php to show sold-out sessions automatically.", [], ['context' => 'Smeetz']);
+      $requirement['description'] = $this->t("Set \$settings['smeetz_ticketing']['api_key'] in settings.local.php to show sold-out sessions automatically.", [], ['context' => 'Smeetz']);
       $requirement['severity'] = RequirementSeverity::Warning;
-      return ['dagda_smeetz_sync' => $requirement];
+      return ['smeetz_ticketing_sync' => $requirement];
     }
 
     $last = (int) $this->state->get(AvailabilitySyncInterface::STATE_LAST_SUCCESS, 0);
@@ -100,7 +100,7 @@ final class SmeetzHooks {
         $requirement['description'] = $this->t('No successful sync for a day: sold-out badges are hidden until Smeetz answers again. See the log for errors.', [], ['context' => 'Smeetz']);
       }
     }
-    return ['dagda_smeetz_sync' => $requirement];
+    return ['smeetz_ticketing_sync' => $requirement];
   }
 
 }

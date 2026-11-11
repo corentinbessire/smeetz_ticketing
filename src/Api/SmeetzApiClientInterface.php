@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Api;
+namespace Drupal\smeetz_ticketing\Api;
 
 /**
  * Talks to the Smeetz public API.
@@ -23,7 +23,7 @@ interface SmeetzApiClientInterface {
    * Whether an API key is set in settings.php.
    *
    * @return bool
-   *   TRUE when $settings['dagda_smeetz']['api_key'] is not empty.
+   *   TRUE when $settings['smeetz_ticketing']['api_key'] is not empty.
    */
   public function hasApiKey(): bool;
 
@@ -40,12 +40,12 @@ interface SmeetzApiClientInterface {
    * @param int $to
    *   End of the range, as a Unix timestamp.
    *
-   * @return \Drupal\dagda_smeetz\Api\AvailabilitySlot[]
+   * @return \Drupal\smeetz_ticketing\Api\AvailabilitySlot[]
    *   The slots.
    *
-   * @throws \Drupal\dagda_smeetz\Exception\SmeetzRateLimitException
+   * @throws \Drupal\smeetz_ticketing\Exception\SmeetzRateLimitException
    *   When Smeetz answers HTTP 429.
-   * @throws \Drupal\dagda_smeetz\Exception\SmeetzApiException
+   * @throws \Drupal\smeetz_ticketing\Exception\SmeetzApiException
    *   When the API key is missing, Smeetz is unreachable or answers an error.
    */
   public function availabilities(array $option_ids, int $from, int $to): array;

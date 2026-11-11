@@ -5,7 +5,7 @@
  * Nothing from Smeetz loads with the page: the loader is added on the first
  * click, once per page. The Smeetz loader sets tracking cookies as soon as it
  * runs, so a consent manager can ask first by replacing
- * Drupal.dagdaSmeetz.consent (see README.md). If the loader fails or is
+ * Drupal.smeetzTicketing.consent (see README.md). If the loader fails or is
  * blocked, the button's link to the Smeetz booking page opens instead.
  */
 ((Drupal, drupalSettings, once) => {
@@ -18,7 +18,7 @@
    *
    * @namespace
    */
-  Drupal.dagdaSmeetz = Drupal.dagdaSmeetz || {};
+  Drupal.smeetzTicketing = Drupal.smeetzTicketing || {};
 
   /**
    * Resolves with TRUE when Smeetz may load, FALSE to open the link instead.
@@ -32,8 +32,8 @@
    * @return {Promise<boolean>}
    *   Whether Smeetz may load.
    */
-  Drupal.dagdaSmeetz.consent =
-    Drupal.dagdaSmeetz.consent || (() => Promise.resolve(true));
+  Drupal.smeetzTicketing.consent =
+    Drupal.smeetzTicketing.consent || (() => Promise.resolve(true));
 
   /**
    * Adds the Smeetz loader to the page, once.
@@ -41,11 +41,11 @@
    * @return {Promise<void>}
    *   Resolves when Smeetz is ready, rejects if it fails or times out.
    */
-  Drupal.dagdaSmeetz.load = () => {
+  Drupal.smeetzTicketing.load = () => {
     if (loading) {
       return loading;
     }
-    const { groupId, loaderUrl } = drupalSettings.dagdaSmeetz || {};
+    const { groupId, loaderUrl } = drupalSettings.smeetzTicketing || {};
     loading = new Promise((resolve, reject) => {
       // The official Smeetz stub: calls are queued until the loader runs.
       if (!window._smtz) {
@@ -174,7 +174,7 @@
    *   The button.
    */
   function openWidget(button) {
-    const { groupId } = drupalSettings.dagdaSmeetz || {};
+    const { groupId } = drupalSettings.smeetzTicketing || {};
     const options = {
       productId: button.dataset.smeetzProduct,
       gId: String(groupId),
@@ -196,9 +196,9 @@
    *
    * @type {Drupal~behavior}
    */
-  Drupal.behaviors.dagdaSmeetz = {
+  Drupal.behaviors.smeetzTicketing = {
     attach(context) {
-      once('dagda-smeetz', 'a[data-smeetz-product]', context).forEach(
+      once('smeetz-ticketing', 'a[data-smeetz-product]', context).forEach(
         (button) => {
           button.addEventListener('click', (event) => {
             // Let modified clicks open the link in a new tab as usual.
@@ -213,14 +213,14 @@
             }
             event.preventDefault();
             button.setAttribute('aria-busy', 'true');
-            Drupal.dagdaSmeetz
+            Drupal.smeetzTicketing
               .consent(button)
               .then((allowed) => {
                 if (!allowed) {
                   openFallback(button);
                   return null;
                 }
-                return Drupal.dagdaSmeetz.load().then(() => openWidget(button));
+                return Drupal.smeetzTicketing.load().then(() => openWidget(button));
               })
               .catch(() => openFallback(button))
               .finally(() => button.removeAttribute('aria-busy'));

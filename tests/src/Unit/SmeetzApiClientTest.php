@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Unit;
+namespace Drupal\Tests\smeetz_ticketing\Unit;
 
 use Drupal\Core\Site\Settings;
-use Drupal\dagda_smeetz\Api\SmeetzApiClient;
-use Drupal\dagda_smeetz\Exception\SmeetzApiException;
-use Drupal\dagda_smeetz\SmeetzUrls;
+use Drupal\smeetz_ticketing\Api\SmeetzApiClient;
+use Drupal\smeetz_ticketing\Exception\SmeetzApiException;
+use Drupal\smeetz_ticketing\SmeetzUrls;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -23,7 +23,7 @@ use PHPUnit\Framework\Attributes\Group;
  * Tests the Smeetz API client.
  */
 #[CoversClass(SmeetzApiClient::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 final class SmeetzApiClientTest extends UnitTestCase {
 
   /**
@@ -46,9 +46,9 @@ final class SmeetzApiClientTest extends UnitTestCase {
     $stack->push(Middleware::history($this->history));
     return new SmeetzApiClient(
       new Client(['handler' => $stack]),
-      new Settings(['dagda_smeetz' => ['api_key' => $key]]),
+      new Settings(['smeetz_ticketing' => ['api_key' => $key]]),
       new SmeetzUrls($this->getConfigFactoryStub([
-        'dagda_smeetz.settings' => ['environment' => 'live', 'group_id' => ''],
+        'smeetz_ticketing.settings' => ['environment' => 'live', 'group_id' => ''],
       ])),
     );
   }

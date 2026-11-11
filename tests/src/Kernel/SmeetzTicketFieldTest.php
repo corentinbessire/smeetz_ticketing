@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Kernel;
+namespace Drupal\Tests\smeetz_ticketing\Kernel;
 
-use Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem;
+use Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem;
 use Drupal\entity_test\Entity\EntityTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * Tests the Smeetz ticket field type.
  */
 #[CoversClass(SmeetzTicketItem::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 #[RunTestsInSeparateProcesses]
 final class SmeetzTicketFieldTest extends SmeetzKernelTestBase {
 

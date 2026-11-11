@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz;
+namespace Drupal\smeetz_ticketing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\dagda_smeetz\Enum\SmeetzEnvironment;
+use Drupal\smeetz_ticketing\Enum\SmeetzEnvironment;
 
 /**
  * Builds Smeetz URLs from the module settings.
@@ -20,7 +20,7 @@ final class SmeetzUrls implements SmeetzUrlsInterface {
    * {@inheritdoc}
    */
   public function environment(): SmeetzEnvironment {
-    $value = (string) $this->configFactory->get('dagda_smeetz.settings')->get('environment');
+    $value = (string) $this->configFactory->get('smeetz_ticketing.settings')->get('environment');
     return SmeetzEnvironment::tryFrom($value) ?? SmeetzEnvironment::Test;
   }
 
@@ -28,7 +28,7 @@ final class SmeetzUrls implements SmeetzUrlsInterface {
    * {@inheritdoc}
    */
   public function groupId(): string {
-    return (string) $this->configFactory->get('dagda_smeetz.settings')->get('group_id');
+    return (string) $this->configFactory->get('smeetz_ticketing.settings')->get('group_id');
   }
 
   /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Plugin\Field\FieldFormatter;
+namespace Drupal\smeetz_ticketing\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -16,10 +16,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\dagda_smeetz\FieldDate;
-use Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem;
-use Drupal\dagda_smeetz\SmeetzUrlsInterface;
-use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
+use Drupal\smeetz_ticketing\FieldDate;
+use Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem;
+use Drupal\smeetz_ticketing\SmeetzUrlsInterface;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface;
 use Drupal\field\FieldConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,9 +32,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * link opens instead.
  */
 #[FieldFormatter(
-  id: 'dagda_smeetz_button',
+  id: 'smeetz_ticketing_button',
   label: new TranslatableMarkup('Smeetz booking button', [], ['context' => 'Smeetz']),
-  field_types: ['dagda_smeetz_ticket'],
+  field_types: ['smeetz_ticketing_ticket'],
 )]
 final class SmeetzBookingButtonFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
@@ -158,12 +158,12 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
       if ($fresh && $item->get('availability')->getValue() === SmeetzTicketItem::SOLD_OUT) {
         $sold_out_shown = TRUE;
         $elements[$delta] = [
-          '#theme' => 'dagda_smeetz_button',
+          '#theme' => 'smeetz_ticketing_button',
           '#label' => $this->getSetting('sold_out_label'),
           '#sold_out' => TRUE,
           '#product_id' => $product_id,
           '#attributes' => [
-            'class' => ['dagda-smeetz-button', 'is-sold-out'],
+            'class' => ['smeetz-ticketing-button', 'is-sold-out'],
             'aria-disabled' => 'true',
           ],
         ];
@@ -174,10 +174,10 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
         'href' => $this->urls->productPageUrl($product_id),
         'target' => '_blank',
         'rel' => 'noopener nofollow',
-        'class' => ['dagda-smeetz-button'],
+        'class' => ['smeetz-ticketing-button'],
       ];
       $element = [
-        '#theme' => 'dagda_smeetz_button',
+        '#theme' => 'smeetz_ticketing_button',
         '#label' => $this->getSetting('label'),
         '#enhanced' => $group_id !== '',
         '#product_id' => $product_id,
@@ -197,9 +197,9 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
           $attributes['data-smeetz-date'] = $show_date;
         }
         $element['#attached'] = [
-          'library' => ['dagda_smeetz/booking'],
+          'library' => ['smeetz_ticketing/booking'],
           'drupalSettings' => [
-            'dagdaSmeetz' => [
+            'smeetzTicketing' => [
               'groupId' => $group_id,
               'loaderUrl' => $this->urls->loaderUrl(),
             ],
@@ -211,7 +211,7 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
     }
 
     $cacheability = new CacheableMetadata();
-    $cacheability->addCacheableDependency($this->configFactory->get('dagda_smeetz.settings'));
+    $cacheability->addCacheableDependency($this->configFactory->get('smeetz_ticketing.settings'));
     $cacheability->addCacheableDependency($this->configFactory->get('system.date'));
     // The statuses stop counting a day after the last successful sync.
     $fresh_until = $this->sync->freshUntil();

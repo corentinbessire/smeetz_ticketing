@@ -1,4 +1,4 @@
-dagda_smeetz.settings:
+smeetz_ticketing.settings:
   type: config_object
   label: 'Smeetz settings'
   mapping:
@@ -23,11 +23,11 @@ dagda_smeetz.settings:
           pattern: '/^[0-9]*$/'
           message: 'The group ID is a number.'
 
-field.storage_settings.dagda_smeetz_ticket:
+field.storage_settings.smeetz_ticketing_ticket:
   type: mapping
   label: 'Smeetz ticket storage settings'
 
-field.field_settings.dagda_smeetz_ticket:
+field.field_settings.smeetz_ticketing_ticket:
   type: mapping
   label: 'Smeetz ticket field settings'
   mapping:
@@ -44,7 +44,7 @@ field.field_settings.dagda_smeetz_ticket:
       type: string
       label: 'Value when sold out'
 
-field.value.dagda_smeetz_ticket:
+field.value.smeetz_ticketing_ticket:
   type: mapping
   label: 'Default value'
   mapping:
@@ -61,11 +61,11 @@ field.value.dagda_smeetz_ticket:
       type: integer
       label: 'Last check'
 
-field.widget.settings.dagda_smeetz_ticket:
+field.widget.settings.smeetz_ticketing_ticket:
   type: mapping
   label: 'Smeetz ticket widget settings'
 
-field.formatter.settings.dagda_smeetz_button:
+field.formatter.settings.smeetz_ticketing_button:
   type: mapping
   label: 'Smeetz booking button settings'
   mapping:

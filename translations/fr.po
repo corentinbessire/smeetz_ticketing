@@ -1,15 +1,15 @@
-# French translation of Dagda Smeetz.
+# French translation of Smeetz Ticketing.
 msgid ""
 msgstr ""
-"Project-Id-Version: dagda_smeetz\n"
+"Project-Id-Version: smeetz_ticketing\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-msgid "Dagda Smeetz"
-msgstr "Dagda Smeetz"
+msgid "Smeetz Ticketing"
+msgstr "Smeetz Ticketing"
 
 msgid "Book Smeetz tickets from the site: a Smeetz ticket field and a button that opens the Smeetz booking widget."
 msgstr "Réserver des billets Smeetz depuis le site : un champ billet Smeetz et un bouton qui ouvre le widget de réservation Smeetz."
@@ -208,8 +208,8 @@ msgid "Set in settings.php."
 msgstr "Définie dans settings.php."
 
 msgctxt "Smeetz"
-msgid "Not set. Add $settings['dagda_smeetz']['api_key'] to settings.local.php: it is a secret and never goes in configuration."
-msgstr "Non définie. Ajoutez $settings['dagda_smeetz']['api_key'] à settings.local.php : c’est un secret, il ne va jamais dans la configuration."
+msgid "Not set. Add $settings['smeetz_ticketing']['api_key'] to settings.local.php: it is a secret and never goes in configuration."
+msgstr "Non définie. Ajoutez $settings['smeetz_ticketing']['api_key'] à settings.local.php : c’est un secret, il ne va jamais dans la configuration."
 
 msgctxt "Smeetz"
 msgid "Smeetz availability sync"
@@ -220,8 +220,8 @@ msgid "No API key"
 msgstr "Pas de clé d’API"
 
 msgctxt "Smeetz"
-msgid "Set $settings['dagda_smeetz']['api_key'] in settings.local.php to show sold-out sessions automatically."
-msgstr "Définissez $settings['dagda_smeetz']['api_key'] dans settings.local.php pour afficher automatiquement les séances complètes."
+msgid "Set $settings['smeetz_ticketing']['api_key'] in settings.local.php to show sold-out sessions automatically."
+msgstr "Définissez $settings['smeetz_ticketing']['api_key'] dans settings.local.php pour afficher automatiquement les séances complètes."
 
 msgctxt "Smeetz"
 msgid "Never run"

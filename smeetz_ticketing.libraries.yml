@@ -1,7 +1,7 @@
 booking:
   version: VERSION
   js:
-    js/dagda-smeetz.js: {}
+    js/smeetz-ticketing.js: {}
   dependencies:
     - core/drupal
     - core/drupalSettings

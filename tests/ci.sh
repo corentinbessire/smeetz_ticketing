@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Runs the module's checks against a Drupal site that has it installed at
-# web/modules/contrib/dagda_smeetz. GitHub Actions and tests/local.sh both
+# web/modules/contrib/smeetz_ticketing. GitHub Actions and tests/local.sh both
 # call it, so CI and a local run check the same things.
 #
 # Usage: tests/ci.sh <site root> <step>
@@ -15,7 +15,7 @@ set -uo pipefail
 
 site_root="$(cd "$1" && pwd)"
 step="${2:-all}"
-module=web/modules/contrib/dagda_smeetz
+module=web/modules/contrib/smeetz_ticketing
 
 cd "$site_root" || exit 1
 
@@ -35,7 +35,7 @@ lint() {
   echo "::endgroup::"
   echo "::group::JavaScript syntax"
   if command -v node >/dev/null; then
-    node --check "$module/js/dagda-smeetz.js" || status=1
+    node --check "$module/js/smeetz-ticketing.js" || status=1
   else
     echo "node not found: skipped."
   fi

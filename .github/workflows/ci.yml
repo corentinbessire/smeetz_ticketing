@@ -3,7 +3,7 @@ name: CI
 # Builds a plain Drupal 11 site, installs this branch into it as a Composer
 # package, then runs tests/ci.sh (PHPCS, PHPStan, unit and kernel tests).
 # A stock Drupal site keeps the module honest: it must not need anything a
-# Dagda Quickstart adds.
+# particular project adds.
 
 on:
   pull_request:
@@ -40,7 +40,7 @@ jobs:
       SIMPLETEST_DB: mysql://root:root@127.0.0.1:3306/drupal
       SIMPLETEST_BASE_URL: http://localhost
     steps:
-      - name: Checkout dagda-smeetz
+      - name: Checkout smeetz-ticketing
         uses: actions/checkout@v7
         with:
           path: package
@@ -76,11 +76,11 @@ jobs:
       - name: Require this branch
         working-directory: site
         run: |
-          composer config repositories.dagda-smeetz \
-            '{"type": "path", "url": "../package", "options": {"symlink": false, "versions": {"corentinbessire/dagda_smeetz": "dev-ci"}}}'
-          composer require corentinbessire/dagda_smeetz:dev-ci \
+          composer config repositories.smeetz-ticketing \
+            '{"type": "path", "url": "../package", "options": {"symlink": false, "versions": {"corentinbessire/smeetz_ticketing": "dev-ci"}}}'
+          composer require corentinbessire/smeetz_ticketing:dev-ci \
             --no-progress --no-interaction
-          test -f web/modules/contrib/dagda_smeetz/dagda_smeetz.info.yml
+          test -f web/modules/contrib/smeetz_ticketing/smeetz_ticketing.info.yml
 
       - name: Lint
         run: bash package/tests/ci.sh site lint

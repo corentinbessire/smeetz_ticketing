@@ -1,0 +1,7 @@
+smeetz_ticketing.settings:
+  path: '/admin/config/services/smeetz'
+  defaults:
+    _form: '\Drupal\smeetz_ticketing\Form\SmeetzSettingsForm'
+    _title: 'Smeetz'
+  requirements:
+    _permission: 'administer smeetz_ticketing'

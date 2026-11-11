@@ -1,5 +1,5 @@
-dagda_smeetz.settings:
+smeetz_ticketing.settings:
   title: 'Smeetz'
   description: 'Smeetz environment and group ID for the booking widget.'
-  route_name: dagda_smeetz.settings
+  route_name: smeetz_ticketing.settings
   parent: system.admin_config_services

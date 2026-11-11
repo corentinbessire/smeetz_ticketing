@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Plugin\Field\FieldWidget;
+namespace Drupal\smeetz_ticketing\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -16,9 +16,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  * The availability columns are kept as they are: only the sync writes them.
  */
 #[FieldWidget(
-  id: 'dagda_smeetz_ticket',
+  id: 'smeetz_ticketing_ticket',
   label: new TranslatableMarkup('Smeetz ticket', [], ['context' => 'Smeetz']),
-  field_types: ['dagda_smeetz_ticket'],
+  field_types: ['smeetz_ticketing_ticket'],
 )]
 final class SmeetzTicketWidget extends WidgetBase {
 
@@ -26,7 +26,7 @@ final class SmeetzTicketWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
-    /** @var \Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem $item */
+    /** @var \Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem $item */
     $item = $items[$delta];
 
     $element += [

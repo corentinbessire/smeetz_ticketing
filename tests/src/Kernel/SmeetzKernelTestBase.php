@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Kernel;
+namespace Drupal\Tests\smeetz_ticketing\Kernel;
 
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
@@ -18,7 +18,7 @@ abstract class SmeetzKernelTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'dagda_smeetz',
+    'smeetz_ticketing',
     'datetime',
     'entity_test',
     'field',
@@ -34,12 +34,12 @@ abstract class SmeetzKernelTestBase extends KernelTestBase {
     parent::setUp();
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('user');
-    $this->installConfig(['system', 'field', 'dagda_smeetz']);
+    $this->installConfig(['system', 'field', 'smeetz_ticketing']);
 
     FieldStorageConfig::create([
       'field_name' => 'field_ticket',
       'entity_type' => 'entity_test',
-      'type' => 'dagda_smeetz_ticket',
+      'type' => 'smeetz_ticketing_ticket',
     ])->save();
     FieldConfig::create([
       'field_name' => 'field_ticket',

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Enum;
+namespace Drupal\smeetz_ticketing\Enum;
 
 /**
  * The Smeetz environment a site books against.

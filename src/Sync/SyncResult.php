@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Sync;
+namespace Drupal\smeetz_ticketing\Sync;
 
 /**
  * The outcome of one availability sync.

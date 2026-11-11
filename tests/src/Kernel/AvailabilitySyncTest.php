@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\dagda_smeetz\Kernel;
+namespace Drupal\Tests\smeetz_ticketing\Kernel;
 
 use Drupal\Core\Site\Settings;
-use Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem;
-use Drupal\dagda_smeetz\Sync\AvailabilitySync;
-use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
+use Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySync;
+use Drupal\smeetz_ticketing\Sync\AvailabilitySyncInterface;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -24,7 +24,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * Tests the availability sync against a mocked Smeetz API.
  */
 #[CoversClass(AvailabilitySync::class)]
-#[Group('dagda_smeetz')]
+#[Group('smeetz_ticketing')]
 #[RunTestsInSeparateProcesses]
 final class AvailabilitySyncTest extends SmeetzKernelTestBase {
 
@@ -83,7 +83,7 @@ final class AvailabilitySyncTest extends SmeetzKernelTestBase {
    *   The key, or an empty string for none.
    */
   private function setApiKey(string $key): void {
-    $this->setSetting('dagda_smeetz', ['api_key' => $key]);
+    $this->setSetting('smeetz_ticketing', ['api_key' => $key]);
     $this->container->set('settings', Settings::getInstance());
   }
 
@@ -227,7 +227,7 @@ final class AvailabilitySyncTest extends SmeetzKernelTestBase {
   }
 
   /**
-   * Tests that nothing is asked outside the festival period.
+   * Tests that nothing is asked outside the sales period.
    */
   public function testNoUpcomingSession(): void {
     $this->session(self::OPTION_A, $this->now - 3600);

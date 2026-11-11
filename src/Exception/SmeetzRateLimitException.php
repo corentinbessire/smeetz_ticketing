@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Exception;
+namespace Drupal\smeetz_ticketing\Exception;
 
 /**
  * Thrown when Smeetz answers HTTP 429: stop and wait for the next run.

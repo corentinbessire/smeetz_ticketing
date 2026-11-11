@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\dagda_smeetz\Exception;
+namespace Drupal\smeetz_ticketing\Exception;
 
 /**
  * Thrown when the Smeetz API cannot be reached or answers with an error.
