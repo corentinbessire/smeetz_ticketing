@@ -12,11 +12,16 @@
  * - label: The button label.
  * - attributes: HTML attributes, including href and data-smeetz-*.
  * - enhanced: Whether the click opens the Smeetz widget.
+ * - sold_out: Whether the session is sold out: a label, no link.
  * - product_id: The Smeetz product ID.
  * - show_date: The day passed to Smeetz (YYYY-MM-DD), or NULL.
  */
 #}
+{% if sold_out %}
+<span{{ attributes }}>{{ label }}</span>
+{% else %}
 <a{{ attributes }}>
   {{- label -}}
   {%- if not enhanced %}<span class="visually-hidden"> {{ '(opens Smeetz in a new tab)'|t({}, {'context': 'Smeetz'}) }}</span>{% endif -%}
 </a>
+{% endif %}

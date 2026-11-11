@@ -9,6 +9,12 @@ dagda_smeetz.settings:
         Choice:
           - test
           - live
+    sync_interval:
+      type: integer
+      label: 'Availability sync interval, in minutes (0: off)'
+      constraints:
+        Range:
+          min: 0
     group_id:
       type: string
       label: 'Group ID'
@@ -24,6 +30,19 @@ field.storage_settings.dagda_smeetz_ticket:
 field.field_settings.dagda_smeetz_ticket:
   type: mapping
   label: 'Smeetz ticket field settings'
+  mapping:
+    date_field:
+      type: string
+      label: 'Session date field'
+    status_field:
+      type: string
+      label: 'List field kept in step with the availability'
+    status_available:
+      type: string
+      label: 'Value when available'
+    status_sold_out:
+      type: string
+      label: 'Value when sold out'
 
 field.value.dagda_smeetz_ticket:
   type: mapping
@@ -59,3 +78,6 @@ field.formatter.settings.dagda_smeetz_button:
     lightbox:
       type: boolean
       label: 'Open as an overlay'
+    sold_out_label:
+      type: label
+      label: 'Label when sold out'

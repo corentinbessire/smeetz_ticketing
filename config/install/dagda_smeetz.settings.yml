@@ -1,2 +1,3 @@
 environment: test
 group_id: ''
+sync_interval: 10

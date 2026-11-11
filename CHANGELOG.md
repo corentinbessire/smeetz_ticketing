@@ -18,4 +18,9 @@ All notable changes to this module. Versions follow [Semantic Versioning](https:
 - Focus moves into the widget when it opens and back to the button when it
   closes (Smeetz leaves it on the page behind).
 - Settings form at `/admin/config/services/smeetz` (environment, group ID).
+- Availability sync: cron (or `drush smeetz:sync`) asks Smeetz which
+  sessions are sold out, in one bulk check, and the button shows a "Sold out"
+  label instead. Statuses older than a day are ignored. Status report entry.
+- Field settings: the session date the sync matches slots on, and an
+  optional list field kept in step with the availability.
 - French translation.

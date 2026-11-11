@@ -69,7 +69,7 @@ jobs:
           composer require --dev --no-progress --no-interaction \
             drupal/core-dev:^11 \
             mglaman/phpstan-drupal phpstan/extension-installer \
-            drupal/coder
+            drupal/coder drush/drush
 
       - name: Require this branch
         working-directory: site

@@ -38,4 +38,17 @@ enum SmeetzEnvironment: string {
     };
   }
 
+  /**
+   * Returns the base URL of the Smeetz public API.
+   *
+   * @return string
+   *   The scheme and host, without a trailing slash.
+   */
+  public function apiBaseUrl(): string {
+    return match ($this) {
+      self::Test => 'https://services.test.smeetz.com',
+      self::Live => 'https://services-live.smeetz.com',
+    };
+  }
+
 }

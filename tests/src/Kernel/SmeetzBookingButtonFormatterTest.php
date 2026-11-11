@@ -6,6 +6,7 @@ namespace Drupal\Tests\dagda_smeetz\Kernel;
 
 use Drupal\Core\Render\RendererInterface;
 use Drupal\dagda_smeetz\Plugin\Field\FieldFormatter\SmeetzBookingButtonFormatter;
+use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
 use Drupal\entity_test\Entity\EntityTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -132,6 +133,35 @@ final class SmeetzBookingButtonFormatterTest extends SmeetzKernelTestBase {
     $link = $this->cssSelect('a.dagda-smeetz-button')[0];
     $this->assertEmpty((string) $link['data-smeetz-date'], 'No date when no date field is set.');
     $this->assertSame('false', (string) $link['data-smeetz-lightbox']);
+  }
+
+  /**
+   * Tests the sold-out label, and that a stale status is ignored.
+   */
+  public function testSoldOut(): void {
+    $this->config('dagda_smeetz.settings')->set('group_id', '16342')->save();
+    $this->display['settings']['sold_out_label'] = 'Complet';
+    $now = $this->container->get('datetime.time')->getRequestTime();
+    $state = $this->container->get('state');
+    $entity = $this->createEntity([
+      'field_ticket' => ['product_id' => '39161', 'availability' => 'sold_out'],
+    ]);
+
+    $state->set(AvailabilitySyncInterface::STATE_LAST_SUCCESS, $now - 600);
+    [$build, $html] = $this->renderTicket($entity);
+    $this->setRawContent($html);
+    $this->assertCount(0, $this->cssSelect('a'), 'No link when sold out.');
+    $badge = $this->cssSelect('span.dagda-smeetz-button.is-sold-out')[0] ?? NULL;
+    $this->assertNotNull($badge);
+    $this->assertSame('Complet', trim((string) $badge));
+    $this->assertSame('true', (string) $badge['aria-disabled']);
+    $this->assertSame(AvailabilitySyncInterface::STALE_AFTER - 600, $build['#cache']['max-age']);
+
+    // No successful sync for more than a day: back to the button.
+    $state->set(AvailabilitySyncInterface::STATE_LAST_SUCCESS, $now - 2 * 86400);
+    [, $html] = $this->renderTicket($entity);
+    $this->setRawContent($html);
+    $this->assertCount(1, $this->cssSelect('a.dagda-smeetz-button'));
   }
 
   /**

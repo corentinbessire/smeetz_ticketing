@@ -8,8 +8,10 @@ use Drupal\Core\Field\Attribute\FieldType;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\dagda_smeetz\FieldDate;
 
 /**
  * A Smeetz ticket: the product sold, and its last known availability.
@@ -42,6 +44,72 @@ final class SmeetzTicketItem extends FieldItemBase {
    * Availability value: sold out.
    */
   public const SOLD_OUT = 'sold_out';
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultFieldSettings(): array {
+    return [
+      'date_field' => '',
+      'status_field' => '',
+      'status_available' => '',
+      'status_sold_out' => '',
+    ] + parent::defaultFieldSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state): array {
+    $definition = $this->getFieldDefinition();
+    $date_fields = $list_fields = [];
+    $bundle = $definition->getTargetBundle();
+    if ($bundle !== NULL) {
+      // Field items get no dependency injection.
+      // phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
+      $fields = \Drupal::service('entity_field.manager')->getFieldDefinitions($definition->getTargetEntityTypeId(), $bundle);
+      foreach ($fields as $name => $field) {
+        if (in_array($field->getType(), FieldDate::FIELD_TYPES, TRUE)) {
+          $date_fields[$name] = (string) $field->getLabel();
+        }
+        if (in_array($field->getType(), ['list_string', 'list_integer'], TRUE)) {
+          $list_fields[$name] = (string) $field->getLabel();
+        }
+      }
+    }
+
+    $element['date_field'] = [
+      '#type' => 'select',
+      '#title' => new TranslatableMarkup('Session date', [], ['context' => 'Smeetz']),
+      '#options' => $date_fields,
+      '#empty_option' => new TranslatableMarkup('- None -', [], ['context' => 'Smeetz']),
+      '#default_value' => $this->getSetting('date_field'),
+      '#description' => new TranslatableMarkup('Used by the availability sync: past content is skipped, and each item is matched to the Smeetz slot that starts at this time. Without it, an item is sold out only when every slot of its option is.', [], ['context' => 'Smeetz']),
+    ];
+    $element['status_field'] = [
+      '#type' => 'select',
+      '#title' => new TranslatableMarkup('Also write the availability to', [], ['context' => 'Smeetz']),
+      '#options' => $list_fields,
+      '#empty_option' => new TranslatableMarkup('- Nothing -', [], ['context' => 'Smeetz']),
+      '#default_value' => $this->getSetting('status_field'),
+      '#description' => new TranslatableMarkup('Optional: a list field the sync keeps in step, for a site that already shows its own status.', [], ['context' => 'Smeetz']),
+    ];
+    $element['status_available'] = [
+      '#type' => 'textfield',
+      '#title' => new TranslatableMarkup('Value when available', [], ['context' => 'Smeetz']),
+      '#default_value' => $this->getSetting('status_available'),
+      '#size' => 20,
+      '#states' => ['invisible' => [':input[name="settings[status_field]"]' => ['value' => '']]],
+    ];
+    $element['status_sold_out'] = [
+      '#type' => 'textfield',
+      '#title' => new TranslatableMarkup('Value when sold out', [], ['context' => 'Smeetz']),
+      '#default_value' => $this->getSetting('status_sold_out'),
+      '#size' => 20,
+      '#states' => ['invisible' => [':input[name="settings[status_field]"]' => ['value' => '']]],
+    ];
+    return $element;
+  }
 
   /**
    * {@inheritdoc}

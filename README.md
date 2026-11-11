@@ -55,6 +55,40 @@ It installs to `web/modules/contrib/dagda_smeetz`.
 - **Option UUID** (optional): the ID of a ticket option, only needed for the
   availability sync.
 
+## Availability sync ("sold out")
+
+Cron asks Smeetz which sessions are sold out and shows **Sold out** (label
+set in the formatter) instead of the button.
+
+1. Put the key in `settings.local.php`, never in configuration:
+   ```php
+   $settings['dagda_smeetz']['api_key'] = '…';
+   ```
+   It is in the Smeetz back office → apps menu → Integrations.
+2. On each item, fill the **Option UUID**.
+3. In the field settings, choose the **Session date**: past content is
+   skipped, and each item is matched to the Smeetz slot that starts at that
+   time (within a minute). Optionally, name a list field the sync keeps in
+   step (for a site that already shows its own status), with the value to
+   write for each state.
+4. **Check every** (settings form) sets the interval, 10 minutes by default;
+   0 turns the sync off. `drush smeetz:sync` runs it on demand.
+
+How it calls Smeetz:
+
+- **One bulk check**: the option UUIDs of every upcoming published item, without
+  duplicates, in chunks of 50, each read page by page (100 slots a page).
+  A 60-session festival is about one request per sync, far under Smeetz's
+  limit of 250 requests a minute per IP.
+- No upcoming item: no call at all.
+- HTTP 429 or any error: the run stops, the last known statuses stay, the error
+  is logged, the next cron run tries again. No retry loop.
+- An item is saved only when its status changes, without a new revision.
+- No successful sync for 24 hours: the sold-out labels are hidden (the button
+  shows again) until Smeetz answers. The status report shows the last success
+  and how many requests it took.
+- The key never reaches the browser.
+
 ## Consent
 
 The Smeetz loader sets cookies as soon as it runs (checked on the test

@@ -22,6 +22,7 @@ abstract class SmeetzKernelTestBase extends KernelTestBase {
     'datetime',
     'entity_test',
     'field',
+    'options',
     'system',
     'user',
   ];

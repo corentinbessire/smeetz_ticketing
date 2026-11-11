@@ -6,6 +6,7 @@ namespace Drupal\dagda_smeetz\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
 
 /**
  * Settings for the Smeetz booking widget.
@@ -14,6 +15,17 @@ use Drupal\Core\Form\FormStateInterface;
  * read from $settings['dagda_smeetz']['api_key'] in settings.local.php.
  */
 final class SmeetzSettingsForm extends ConfigFormBase {
+
+  /**
+   * Whether an API key is set in settings.php.
+   *
+   * @return bool
+   *   TRUE when $settings['dagda_smeetz']['api_key'] is not empty.
+   */
+  private function apiKeySet(): bool {
+    $settings = Settings::get('dagda_smeetz', []);
+    return is_array($settings) && trim((string) ($settings['api_key'] ?? '')) !== '';
+  }
 
   /**
    * {@inheritdoc}
@@ -50,6 +62,27 @@ final class SmeetzSettingsForm extends ConfigFormBase {
       '#size' => 12,
       '#maxlength' => 20,
       '#config_target' => 'dagda_smeetz.settings:group_id',
+    ];
+    $form['sync'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Availability sync', [], ['context' => 'Smeetz']),
+      '#open' => TRUE,
+    ];
+    $form['sync']['sync_interval'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Check every (minutes)', [], ['context' => 'Smeetz']),
+      '#min' => 0,
+      '#step' => 1,
+      '#field_suffix' => $this->t('minutes', [], ['context' => 'Smeetz']),
+      '#description' => $this->t('How often cron asks Smeetz which sessions are sold out. 0 turns the sync off. One check covers every upcoming session in a few requests.', [], ['context' => 'Smeetz']),
+      '#config_target' => 'dagda_smeetz.settings:sync_interval',
+    ];
+    $form['sync']['api_key'] = [
+      '#type' => 'item',
+      '#title' => $this->t('API key', [], ['context' => 'Smeetz']),
+      '#markup' => $this->apiKeySet()
+        ? $this->t('Set in settings.php.', [], ['context' => 'Smeetz'])
+        : $this->t("Not set. Add \$settings['dagda_smeetz']['api_key'] to settings.local.php: it is a secret and never goes in configuration.", [], ['context' => 'Smeetz']),
     ];
     return parent::buildForm($form, $form_state);
   }

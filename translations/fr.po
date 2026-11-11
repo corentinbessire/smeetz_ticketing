@@ -139,3 +139,98 @@ msgstr "L’ID de l’organisateur dans Smeetz, un nombre. Il figure dans le cod
 msgctxt "Smeetz"
 msgid "(opens Smeetz in a new tab)"
 msgstr "(ouvre Smeetz dans un nouvel onglet)"
+
+msgid "Sold out"
+msgstr "Complet"
+
+msgctxt "Smeetz"
+msgid "Session date"
+msgstr "Date de la séance"
+
+msgctxt "Smeetz"
+msgid "- None -"
+msgstr "- Aucune -"
+
+msgctxt "Smeetz"
+msgid "Used by the availability sync: past content is skipped, and each item is matched to the Smeetz slot that starts at this time. Without it, an item is sold out only when every slot of its option is."
+msgstr "Utilisée par la synchronisation des disponibilités : les contenus passés sont ignorés, et chaque élément est associé au créneau Smeetz qui commence à cette heure. Sans elle, un élément n’est complet que si tous les créneaux de son option le sont."
+
+msgctxt "Smeetz"
+msgid "Also write the availability to"
+msgstr "Écrire aussi la disponibilité dans"
+
+msgctxt "Smeetz"
+msgid "- Nothing -"
+msgstr "- Rien -"
+
+msgctxt "Smeetz"
+msgid "Optional: a list field the sync keeps in step, for a site that already shows its own status."
+msgstr "Facultatif : un champ liste que la synchronisation tient à jour, pour un site qui affiche déjà son propre statut."
+
+msgctxt "Smeetz"
+msgid "Value when available"
+msgstr "Valeur si disponible"
+
+msgctxt "Smeetz"
+msgid "Value when sold out"
+msgstr "Valeur si complet"
+
+msgctxt "Smeetz"
+msgid "Label when sold out"
+msgstr "Libellé si complet"
+
+msgctxt "Smeetz"
+msgid "Shown instead of the button when the availability sync reports the session as sold out."
+msgstr "Affiché à la place du bouton quand la synchronisation indique que la séance est complète."
+
+msgctxt "Smeetz"
+msgid "Availability sync"
+msgstr "Synchronisation des disponibilités"
+
+msgctxt "Smeetz"
+msgid "Check every (minutes)"
+msgstr "Vérifier toutes les (minutes)"
+
+msgctxt "Smeetz"
+msgid "minutes"
+msgstr "minutes"
+
+msgctxt "Smeetz"
+msgid "How often cron asks Smeetz which sessions are sold out. 0 turns the sync off. One check covers every upcoming session in a few requests."
+msgstr "À quelle fréquence le cron demande à Smeetz quelles séances sont complètes. 0 désactive la synchronisation. Une vérification couvre toutes les séances à venir en quelques requêtes."
+
+msgctxt "Smeetz"
+msgid "API key"
+msgstr "Clé d’API"
+
+msgctxt "Smeetz"
+msgid "Set in settings.php."
+msgstr "Définie dans settings.php."
+
+msgctxt "Smeetz"
+msgid "Not set. Add $settings['dagda_smeetz']['api_key'] to settings.local.php: it is a secret and never goes in configuration."
+msgstr "Non définie. Ajoutez $settings['dagda_smeetz']['api_key'] à settings.local.php : c’est un secret, il ne va jamais dans la configuration."
+
+msgctxt "Smeetz"
+msgid "Smeetz availability sync"
+msgstr "Synchronisation des disponibilités Smeetz"
+
+msgctxt "Smeetz"
+msgid "No API key"
+msgstr "Pas de clé d’API"
+
+msgctxt "Smeetz"
+msgid "Set $settings['dagda_smeetz']['api_key'] in settings.local.php to show sold-out sessions automatically."
+msgstr "Définissez $settings['dagda_smeetz']['api_key'] dans settings.local.php pour afficher automatiquement les séances complètes."
+
+msgctxt "Smeetz"
+msgid "Never run"
+msgstr "Jamais exécutée"
+
+msgctxt "Smeetz"
+msgid "Last success @ago ago, @count requests"
+msgstr "Dernier succès il y a @ago, @count requêtes"
+
+msgctxt "Smeetz"
+msgid "No successful sync for a day: sold-out badges are hidden until Smeetz answers again. See the log for errors."
+msgstr "Aucune synchronisation réussie depuis un jour : les mentions « complet » sont masquées jusqu’à ce que Smeetz réponde à nouveau. Voir le journal pour les erreurs."

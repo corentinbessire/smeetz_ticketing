@@ -15,7 +15,11 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\dagda_smeetz\FieldDate;
+use Drupal\dagda_smeetz\Plugin\Field\FieldType\SmeetzTicketItem;
 use Drupal\dagda_smeetz\SmeetzUrlsInterface;
+use Drupal\dagda_smeetz\Sync\AvailabilitySyncInterface;
 use Drupal\field\FieldConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,14 +41,7 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
   /**
    * Field types whose first value can be passed to Smeetz as the show date.
    */
-  private const DATE_FIELD_TYPES = [
-    'datetime',
-    'daterange',
-    'smartdate',
-    'timestamp',
-    'created',
-    'changed',
-  ];
+  private const DATE_FIELD_TYPES = FieldDate::FIELD_TYPES;
 
   public function __construct(
     string $plugin_id,
@@ -57,6 +54,8 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
     protected SmeetzUrlsInterface $urls,
     protected ConfigFactoryInterface $configFactory,
     protected EntityFieldManagerInterface $entityFieldManager,
+    protected AvailabilitySyncInterface $sync,
+    protected TimeInterface $time,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
   }
@@ -76,6 +75,8 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
       $container->get(SmeetzUrlsInterface::class),
       $container->get('config.factory'),
       $container->get('entity_field.manager'),
+      $container->get(AvailabilitySyncInterface::class),
+      $container->get(TimeInterface::class),
     );
   }
 
@@ -87,6 +88,7 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
       'label' => 'Book a ticket',
       'date_field' => '',
       'lightbox' => TRUE,
+      'sold_out_label' => 'Sold out',
     ] + parent::defaultSettings();
   }
 
@@ -107,6 +109,13 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
       '#empty_option' => $this->t('- None: Smeetz shows every date -', [], ['context' => 'Smeetz']),
       '#default_value' => $this->getSetting('date_field'),
       '#description' => $this->t('Smeetz opens on the day of this field. It filters by day only: two sessions of the same product on the same day both appear.', [], ['context' => 'Smeetz']),
+    ];
+    $elements['sold_out_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Label when sold out', [], ['context' => 'Smeetz']),
+      '#default_value' => $this->getSetting('sold_out_label'),
+      '#required' => TRUE,
+      '#description' => $this->t('Shown instead of the button when the availability sync reports the session as sold out.', [], ['context' => 'Smeetz']),
     ];
     $elements['lightbox'] = [
       '#type' => 'checkbox',
@@ -139,8 +148,28 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
     $group_id = $this->urls->groupId();
     $show_date = $this->showDate($items->getEntity());
 
+    $fresh = $this->sync->isFresh();
+    $sold_out_shown = FALSE;
+
     foreach ($items as $delta => $item) {
       $product_id = (string) $item->get('product_id')->getValue();
+
+      // Sold out, and the sync is recent enough to trust: no button.
+      if ($fresh && $item->get('availability')->getValue() === SmeetzTicketItem::SOLD_OUT) {
+        $sold_out_shown = TRUE;
+        $elements[$delta] = [
+          '#theme' => 'dagda_smeetz_button',
+          '#label' => $this->getSetting('sold_out_label'),
+          '#sold_out' => TRUE,
+          '#product_id' => $product_id,
+          '#attributes' => [
+            'class' => ['dagda-smeetz-button', 'is-sold-out'],
+            'aria-disabled' => 'true',
+          ],
+        ];
+        continue;
+      }
+
       $attributes = [
         'href' => $this->urls->productPageUrl($product_id),
         'target' => '_blank',
@@ -184,6 +213,14 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
     $cacheability = new CacheableMetadata();
     $cacheability->addCacheableDependency($this->configFactory->get('dagda_smeetz.settings'));
     $cacheability->addCacheableDependency($this->configFactory->get('system.date'));
+    // The statuses stop counting a day after the last successful sync.
+    $fresh_until = $this->sync->freshUntil();
+    if ($fresh_until > 0) {
+      $cacheability->mergeCacheMaxAge(max(0, $fresh_until - $this->time->getRequestTime()));
+    }
+    elseif ($sold_out_shown) {
+      $cacheability->mergeCacheMaxAge(0);
+    }
     $cacheability->applyTo($elements);
     return $elements;
   }
@@ -236,30 +273,17 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
    *   The day as YYYY-MM-DD, or NULL when no date field is set or it is empty.
    */
   private function showDate(FieldableEntityInterface $entity): ?string {
-    $field_name = (string) $this->getSetting('date_field');
-    if ($field_name === '' || !$entity->hasField($field_name) || $entity->get($field_name)->isEmpty()) {
-      return NULL;
-    }
-    $value = $entity->get($field_name)->first()?->getValue()['value'] ?? NULL;
-    if ($value === NULL || $value === '') {
-      return NULL;
-    }
-    // A date-only value is already a day, with no timezone to apply.
-    if (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
-      return $value;
-    }
+    return FieldDate::day($entity, (string) $this->getSetting('date_field'), $this->siteTimezone());
+  }
 
-    $timezone = new \DateTimeZone((string) ($this->configFactory->get('system.date')->get('timezone.default') ?: 'UTC'));
-    try {
-      // Timestamps (Smart Date, timestamp) or a datetime stored in UTC.
-      $date = is_numeric($value)
-        ? (new \DateTimeImmutable('@' . (int) $value))
-        : new \DateTimeImmutable((string) $value, new \DateTimeZone('UTC'));
-    }
-    catch (\Exception) {
-      return NULL;
-    }
-    return $date->setTimezone($timezone)->format('Y-m-d');
+  /**
+   * Returns the site's default timezone.
+   *
+   * @return string
+   *   A timezone name.
+   */
+  private function siteTimezone(): string {
+    return (string) ($this->configFactory->get('system.date')->get('timezone.default') ?: 'UTC');
   }
 
   /**
