@@ -63,6 +63,26 @@ final class SmeetzSettingsForm extends ConfigFormBase {
       '#maxlength' => 20,
       '#config_target' => 'smeetz_ticketing.settings:group_id',
     ];
+    $form['consent_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Consent', [], ['context' => 'Smeetz']),
+      '#open' => TRUE,
+    ];
+    $form['consent_settings']['consent'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Ask before loading Smeetz', [], ['context' => 'Smeetz']),
+      '#description' => $this->t('The Smeetz widget sets tracking cookies as soon as it loads. When this is on, the first click on a booking button asks visitors whether to open the booking here (Smeetz loads on the page) or on smeetz.com in a new tab. The choice is remembered in the browser; place the "Smeetz: booking choice" block (in the footer, for example) to let visitors change it. Leave it off if a consent manager replaces Drupal.smeetzTicketing.consent.', [], ['context' => 'Smeetz']),
+      '#config_target' => 'smeetz_ticketing.settings:consent',
+    ];
+    $form['consent_settings']['privacy_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Privacy policy link', [], ['context' => 'Smeetz']),
+      '#description' => $this->t('Optional. A path on this site (/privacy) or a full address, linked from the question.', [], ['context' => 'Smeetz']),
+      '#config_target' => 'smeetz_ticketing.settings:privacy_url',
+      '#states' => [
+        'visible' => [':input[name="consent"]' => ['checked' => TRUE]],
+      ],
+    ];
     $form['sync'] = [
       '#type' => 'details',
       '#title' => $this->t('Availability sync', [], ['context' => 'Smeetz']),

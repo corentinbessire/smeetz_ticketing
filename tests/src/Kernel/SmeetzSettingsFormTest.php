@@ -72,6 +72,48 @@ final class SmeetzSettingsFormTest extends KernelTestBase {
   }
 
   /**
+   * Tests the consent settings and the privacy link check.
+   */
+  public function testConsent(): void {
+    $config = $this->config('smeetz_ticketing.settings');
+    $this->assertFalse($config->get('consent'));
+
+    $form_state = $this->submit([
+      'environment' => 'test',
+      'group_id' => '',
+      'consent' => '1',
+      'privacy_url' => '/confidentialite',
+    ]);
+    $this->assertSame([], $form_state->getErrors());
+    $config = $this->config('smeetz_ticketing.settings');
+    $this->assertTrue($config->get('consent'));
+    $this->assertSame('/confidentialite', $config->get('privacy_url'));
+
+    $form_state = $this->submit([
+      'environment' => 'test',
+      'group_id' => '',
+      'consent' => '1',
+      'privacy_url' => 'javascript:alert(1)',
+    ]);
+    $this->assertArrayHasKey('privacy_url', $form_state->getErrors());
+  }
+
+  /**
+   * Tests that the post update adds the consent settings to older installs.
+   */
+  public function testConsentPostUpdate(): void {
+    $this->config('smeetz_ticketing.settings')
+      ->clear('consent')
+      ->clear('privacy_url')
+      ->save(TRUE);
+    require_once dirname(__DIR__, 3) . '/smeetz_ticketing.post_update.php';
+    smeetz_ticketing_post_update_consent_settings();
+    $config = $this->config('smeetz_ticketing.settings');
+    $this->assertFalse($config->get('consent'));
+    $this->assertSame('', $config->get('privacy_url'));
+  }
+
+  /**
    * Tests that the route requires the module's permission.
    */
   public function testRouteAccess(): void {

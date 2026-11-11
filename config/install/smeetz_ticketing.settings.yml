@@ -1,3 +1,5 @@
 environment: test
 group_id: ''
 sync_interval: 10
+consent: false
+privacy_url: ''

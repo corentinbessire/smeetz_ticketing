@@ -2,7 +2,11 @@ booking:
   version: VERSION
   js:
     js/smeetz-ticketing.js: {}
+  css:
+    component:
+      css/smeetz-ticketing.css: {}
   dependencies:
     - core/drupal
+    - core/drupal.announce
     - core/drupalSettings
     - core/once

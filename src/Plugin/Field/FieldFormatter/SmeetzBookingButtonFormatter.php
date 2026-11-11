@@ -15,6 +15,7 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\smeetz_ticketing\FieldDate;
 use Drupal\smeetz_ticketing\Plugin\Field\FieldType\SmeetzTicketItem;
@@ -145,6 +146,7 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
    */
   public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
+    $cacheability = new CacheableMetadata();
     $group_id = $this->urls->groupId();
     $show_date = $this->showDate($items->getEntity());
 
@@ -202,7 +204,7 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
             'smeetzTicketing' => [
               'groupId' => $group_id,
               'loaderUrl' => $this->urls->loaderUrl(),
-            ],
+            ] + $this->consentSettings($cacheability),
           ],
         ];
       }
@@ -210,7 +212,6 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
       $elements[$delta] = $element;
     }
 
-    $cacheability = new CacheableMetadata();
     $cacheability->addCacheableDependency($this->configFactory->get('smeetz_ticketing.settings'));
     $cacheability->addCacheableDependency($this->configFactory->get('system.date'));
     // The statuses stop counting a day after the last successful sync.
@@ -307,6 +308,29 @@ final class SmeetzBookingButtonFormatter extends FormatterBase implements Contai
     }
     asort($options);
     return $options;
+  }
+
+  /**
+   * Returns the consent prompt settings for the JavaScript, if it is on.
+   *
+   * @param \Drupal\Core\Cache\CacheableMetadata $cacheability
+   *   Collects the cacheability of the privacy policy URL.
+   *
+   * @return array<string, array<string, string>>
+   *   ['consent' => ['privacyUrl' => …]], or an empty array.
+   */
+  private function consentSettings(CacheableMetadata $cacheability): array {
+    $config = $this->configFactory->get('smeetz_ticketing.settings');
+    if (!$config->get('consent')) {
+      return [];
+    }
+    $privacy = (string) $config->get('privacy_url');
+    if (str_starts_with($privacy, '/')) {
+      $generated = Url::fromUserInput($privacy)->toString(TRUE);
+      $cacheability->addCacheableDependency($generated);
+      $privacy = $generated->getGeneratedUrl();
+    }
+    return ['consent' => ['privacyUrl' => $privacy]];
   }
 
   /**

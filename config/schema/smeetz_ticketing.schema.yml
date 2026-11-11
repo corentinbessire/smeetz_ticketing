@@ -22,6 +22,16 @@ smeetz_ticketing.settings:
         Regex:
           pattern: '/^[0-9]*$/'
           message: 'The group ID is a number.'
+    consent:
+      type: boolean
+      label: 'Ask before loading Smeetz'
+    privacy_url:
+      type: string
+      label: 'Privacy policy link shown in the question'
+      constraints:
+        Regex:
+          pattern: '@^(|/[^/].*|/|https?://\S+)$@'
+          message: 'Enter a path starting with / or a full https:// address.'
 
 field.storage_settings.smeetz_ticketing_ticket:
   type: mapping
